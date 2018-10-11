@@ -88,28 +88,48 @@ public class Server {
     }
   }
 
-  public void broadcastSnapshot(int id, int[][] snapshot) {
-
-  }
-
   private void onPacket(Packet packet) {
     System.out.println(packet.toString());
+    Object object = packet.getObject();
+
     switch (packet.getType()) {
-      case "start":
-      case "finish":
-      case "snap":
-      case "attack":
-      case "chat":
-      case "lose":
+      case "login": this.login((Packet.Login) object); break;
+      case "start": this.startGame((Packet.StartGame) object); break;
+      //case "finish": this.finishGame((Packet.FinishGame) object); break;
+      case "snapshot": this.broadcastSnapshot((Packet.Snapshot) object); break;
+      case "pop": this.pop((Packet.Pop) object); break;
+      case "chat": this.chat((Packet.Chat) object); break;
+      case "lose": this.lose((Packet.Lose) object); break;
       default:
     }
   }
 
-  private void startGame() {
+  private void startGame(Packet.StartGame p) {
 
   }
 
-  public User login(String name, String password) {
+  private void broadcastSnapshot(Packet.Snapshot p) {
+
+  }
+
+  private void pop(Packet.Pop p) {
+
+  }
+
+  private void chat(Packet.Chat p) {
+
+  }
+
+  private void lose(Packet.Lose p) {
+
+  }
+
+  private void finishGame(Packet.FinishGame p) {}
+
+  public User login(Packet.Login p) {
+    String name = p.name;
+    String password = p.password;
+
     try {
       Connection c = db.getConnection();
 
@@ -134,7 +154,7 @@ public class Server {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-      System.out.println(ctx.channel().id().asLongText());
+      System.out.println(ctx.channel().id().asShortText());
       super.channelActive(ctx);
     }
 
