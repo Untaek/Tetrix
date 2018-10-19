@@ -1,4 +1,4 @@
-package inje;
+package untaek.game;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
