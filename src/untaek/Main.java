@@ -1,8 +1,10 @@
 package untaek;
 
+import inje.Game;
 import untaek.server.DB;
 import untaek.server.Server;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.Scanner;
@@ -36,3 +38,22 @@ public class Main {
         }
     }
 }
+
+/*
+public class Main extends JFrame {
+  public Main(){
+    inje.Game game = new Game();
+    setContentPane(game); // KeyPanel설정
+
+    setSize(500,500); // size
+    setVisible(true); // 표시여부
+    game.requestFocus(); // 권한 요청
+
+  }
+
+
+
+  public static void main(String[] args) {
+    new Main();
+  }
+}*/
