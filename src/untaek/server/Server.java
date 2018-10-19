@@ -1,8 +1,6 @@
 package untaek.server;
 
-import com.google.gson.Gson;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -88,45 +86,25 @@ public class Server {
     }
   }
 
-  private void onPacket(Packet packet) {
+  private Object onPacket(Packet packet) {
     System.out.println(packet.toString());
     Object object = packet.getObject();
 
     switch (packet.getType()) {
-      case "login": this.login((Packet.Login) object); break;
-      case "start": this.startGame((Packet.StartGame) object); break;
-      //case "finish": this.finishGame((Packet.FinishGame) object); break;
-      case "snapshot": this.broadcastSnapshot((Packet.Snapshot) object); break;
-      case "pop": this.pop((Packet.Pop) object); break;
-      case "chat": this.chat((Packet.Chat) object); break;
-      case "lose": this.lose((Packet.Lose) object); break;
+      case "login": return this.login((Packet.Login) object);
+      case "start": return this.startGame((Packet.StartGame) object);
+      //case "finish": return this.finishGame((Packet.FinishGame) object);
+      case "snapshot": return this.broadcastSnapshot((Packet.Snapshot) object);
+      case "pop": return this.pop((Packet.Pop) object);
+      case "chat": return this.chat((Packet.Chat) object);
+      case "lose": return this.lose((Packet.Lose) object);
       default:
     }
+
+    return null;
   }
 
-  private void startGame(Packet.StartGame p) {
-
-  }
-
-  private void broadcastSnapshot(Packet.Snapshot p) {
-
-  }
-
-  private void pop(Packet.Pop p) {
-
-  }
-
-  private void chat(Packet.Chat p) {
-
-  }
-
-  private void lose(Packet.Lose p) {
-
-  }
-
-  private void finishGame(Packet.FinishGame p) {}
-
-  public User login(Packet.Login p) {
+  private User login(Packet.Login p) {
     String name = p.name;
     String password = p.password;
 
@@ -140,7 +118,6 @@ public class Server {
 
       if(rs.next()) {
         System.out.println(String.format("Login success name: %s", name));
-
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -148,6 +125,30 @@ public class Server {
 
     System.out.println(String.format("Login failed name: %s, password: %s", name, password));
     return null;
+  }
+
+  private int startGame(Packet.StartGame p) {
+    return 0;
+  }
+
+  private int broadcastSnapshot(Packet.Snapshot p) {
+    return 0;
+  }
+
+  private int pop(Packet.Pop p) {
+    return 0;
+  }
+
+  private int chat(Packet.Chat p) {
+    return 0;
+  }
+
+  private int lose(Packet.Lose p) {
+    return 0;
+  }
+
+  private int finishGame(Packet.FinishGame p) {
+    return 0;
   }
 
   private class ServerHandler extends ChannelInboundHandlerAdapter {
