@@ -33,7 +33,7 @@ public class Game extends JPanel {
 
     int count=0;
     int delay = 500;
-    Timer timer;
+    private Timer timer;
 
     TimerTask task;
 
@@ -45,74 +45,7 @@ public class Game extends JPanel {
         reset_field(save_field);
         reset_field_();
 
-        this.addKeyListener(keyadapter = new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e){
-                super.keyReleased(e);
-                int key = e.getKeyCode();
-                if(key == KeyEvent.VK_DOWN){
-                    timer.cancel();
-                    timer.purge();
-                    timer_flag = true;
-
-                    task = new TimerTask(){
-                        @Override
-                        public void run(){
-                            // object 떨어짐
-                            run_();
-                        }
-                    };
-                    timer = new Timer();
-                    timer.schedule(task, 0, delay);
-                }
-            }
-
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-
-                super.keyPressed(e);
-                int key = e.getKeyCode();
-                switch (key){
-                    case KeyEvent.VK_LEFT:
-                        block_event(1);
-                        break;
-                    case KeyEvent.VK_RIGHT:
-                        block_event(2);
-                        break;
-                    case  KeyEvent.VK_UP:
-                        block_event(3);
-                        break;
-                    case KeyEvent.VK_DOWN:
-                        if(timer_flag){
-                            timer.cancel();
-                            timer.purge();
-                            timer_flag = false;
-
-                            timer = new Timer();
-                            task = new TimerTask(){
-                                @Override
-                                public void run(){
-                                    // object 떨어짐
-                                    run_();
-                                }
-                            };
-                            timer.schedule(task,0,delay /4);
-                        }
-
-                        break;
-
-                    case KeyEvent.VK_SPACE:
-                        while (fall_block()){
-                        }
-
-                        block_new = new Block();
-                        break;
-                }
-
-            }
-        });
-
+        this.addKeyListener(keyadapter = new MyKeyAdapter());
 
         block = new Block();
         block_new = new Block();
@@ -416,5 +349,73 @@ public class Game extends JPanel {
         }
     }
 
+
+    public class MyKeyAdapter extends KeyAdapter {
+        @Override
+        public void keyReleased(KeyEvent e){
+            super.keyReleased(e);
+            int key = e.getKeyCode();
+            if(key == KeyEvent.VK_DOWN){
+                timer.cancel();
+                timer.purge();
+                timer_flag = true;
+
+                task = new TimerTask(){
+                    @Override
+                    public void run(){
+                        // object 떨어짐
+                        run_();
+                    }
+                };
+                timer = new Timer();
+                timer.schedule(task, 0, delay);
+            }
+        }
+
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+
+            super.keyPressed(e);
+            int key = e.getKeyCode();
+            switch (key){
+                case KeyEvent.VK_LEFT:
+                    block_event(1);
+                    break;
+                case KeyEvent.VK_RIGHT:
+                    block_event(2);
+                    break;
+                case  KeyEvent.VK_UP:
+                    block_event(3);
+                    break;
+                case KeyEvent.VK_DOWN:
+                    if(timer_flag){
+                        timer.cancel();
+                        timer.purge();
+                        timer_flag = false;
+
+                        timer = new Timer();
+                        task = new TimerTask(){
+                            @Override
+                            public void run(){
+                                // object 떨어짐
+                                run_();
+                            }
+                        };
+                        timer.schedule(task,0,delay /4);
+                    }
+
+                    break;
+
+                case KeyEvent.VK_SPACE:
+                    while (fall_block()){
+                    }
+
+                    block_new = new Block();
+                    break;
+            }
+
+        }
+    }
 
 }
