@@ -45,7 +45,6 @@ public class ClientHandler {
             );
           }
         });
-
     try {
       ChannelFuture f = bootstrap.connect(HOST, PORT).sync();
 

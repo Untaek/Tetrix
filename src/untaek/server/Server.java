@@ -1,8 +1,6 @@
 package untaek.server;
 
-import com.google.gson.Gson;
 import io.netty.bootstrap.ServerBootstrap;
-import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -88,28 +86,28 @@ public class Server {
     }
   }
 
-  public void broadcastSnapshot(int id, int[][] snapshot) {
-
-  }
-
-  private void onPacket(Packet packet) {
+  private Object onPacket(Packet packet) {
     System.out.println(packet.toString());
+    Object object = packet.getObject();
+
     switch (packet.getType()) {
-      case "start":
-      case "finish":
-      case "snap":
-      case "attack":
-      case "chat":
-      case "lose":
+      case "login": return this.login((Packet.Login) object);
+      case "start": return this.startGame((Packet.StartGame) object);
+      //case "finish": return this.finishGame((Packet.FinishGame) object);
+      case "snapshot": return this.broadcastSnapshot((Packet.Snapshot) object);
+      case "pop": return this.pop((Packet.Pop) object);
+      case "chat": return this.chat((Packet.Chat) object);
+      case "lose": return this.lose((Packet.Lose) object);
       default:
     }
+
+    return null;
   }
 
-  private void startGame() {
+  private User login(Packet.Login p) {
+    String name = p.name;
+    String password = p.password;
 
-  }
-
-  public User login(String name, String password) {
     try {
       Connection c = db.getConnection();
 
@@ -120,7 +118,6 @@ public class Server {
 
       if(rs.next()) {
         System.out.println(String.format("Login success name: %s", name));
-
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -130,11 +127,35 @@ public class Server {
     return null;
   }
 
+  private int startGame(Packet.StartGame p) {
+    return 0;
+  }
+
+  private int broadcastSnapshot(Packet.Snapshot p) {
+    return 0;
+  }
+
+  private int pop(Packet.Pop p) {
+    return 0;
+  }
+
+  private int chat(Packet.Chat p) {
+    return 0;
+  }
+
+  private int lose(Packet.Lose p) {
+    return 0;
+  }
+
+  private int finishGame(Packet.FinishGame p) {
+    return 0;
+  }
+
   private class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-      System.out.println(ctx.channel().id().asLongText());
+      System.out.println(ctx.channel().id().asShortText());
       super.channelActive(ctx);
     }
 
