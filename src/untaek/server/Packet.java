@@ -29,6 +29,28 @@ public class Packet {
     return new Gson().toJson(this);
   }
 
+  public static class UserStatus {
+    int id;
+    String name;
+    Score score;
+
+    public UserStatus(int id, String name, Score score) {
+      this.id = id;
+      this.name = name;
+      this.score = score;
+    }
+  }
+
+  public static class Score {
+    int wins;
+    int loses;
+
+    public Score(int wins, int loses) {
+      this.wins = wins;
+      this.loses = loses;
+    }
+  }
+
   public class StartGame {
     int gameId;
     int ids[];

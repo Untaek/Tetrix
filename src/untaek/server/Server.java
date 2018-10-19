@@ -13,6 +13,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class Server {
 
@@ -22,13 +24,16 @@ public class Server {
   EventLoopGroup boss;
   EventLoopGroup worker;
 
-
+  ConcurrentHashMap<Integer, User> users;
+  ConcurrentHashMap<Integer, ArrayList> rooms;
 
   public Server() {
     init();
   }
 
   private void init() {
+    users = new ConcurrentHashMap<>();
+    rooms = new ConcurrentHashMap<>();
     db = new DB();
 
     boss = new NioEventLoopGroup();
@@ -104,7 +109,7 @@ public class Server {
     return null;
   }
 
-  private User login(Packet.Login p) {
+  private Packet.UserStatus login(Packet.Login p) {
     String name = p.name;
     String password = p.password;
 
@@ -119,6 +124,10 @@ public class Server {
       if(rs.next()) {
         System.out.println(String.format("Login success name: %s", name));
       }
+
+      Packet.Score score = new Packet.Score(rs.getInt("win"), rs.getInt("lose"));
+
+      return new Packet.UserStatus(rs.getInt("id"), rs.getString("name"), score);
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -128,6 +137,7 @@ public class Server {
   }
 
   private int startGame(Packet.StartGame p) {
+
     return 0;
   }
 
