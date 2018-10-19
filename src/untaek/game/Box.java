@@ -1,6 +1,4 @@
-package inje;
-
-import java.awt.*;
+package untaek.game;
 
 public class Box {
     int num;

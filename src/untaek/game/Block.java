@@ -1,6 +1,5 @@
-package inje;
+package untaek.game;
 
-import java.awt.*;
 import java.util.Random;
 
 public class Block {
@@ -8,8 +7,8 @@ public class Block {
 
     Box[][] area;
     Box box;
-    int shape; //1~7
-    int degree_max;
+    public int shape; //1~7
+    public int degree_max;
     int degree;//0~3
 
     int row;
@@ -23,9 +22,6 @@ public class Block {
         setting();
         reset_value();
         set_value(this.shape, this.degree);
-        System.out.println("row : " + this.row + "  column : " + this.column);
-        print_block();
-        System.out.println("");
     }
 
     public void turn_block(){
@@ -65,7 +61,6 @@ public class Block {
 
         degree = rand.nextInt(this.degree_max);
         area = new Box[area_length][area_length];
-        System.out.println("area_length = "+ area_length);
     }
 
     public void reset_value(){
@@ -230,7 +225,7 @@ public class Block {
                     System.out.print("   ");
                 }
             }
-            System.out.println("");
+        System.out.println("");
         }
     }
 
