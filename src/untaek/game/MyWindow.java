@@ -1,12 +1,14 @@
 package untaek.game;
 
+import untaek.BasePanel;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class MyWindow extends JFrame {
 
 
-    private static int SIZE = 20;
+    public static int SIZE = 20;
     private static int X = 13;
     private static int Y = 22;
 
@@ -15,30 +17,24 @@ public class MyWindow extends JFrame {
     static int WIDTH = SIZE * 10;
     static int HEIGHT = SIZE * 20;
 
+    Game game ;
 
 
     public MyWindow(){
-        Game game = new Game();
+        setSize(500,500);       // JFrame size
+        setResizable(false);
+        this.setLocationRelativeTo(null);   // 모니터 가운데 띄우기
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     // 폼 종료시 프로그램 종료
+
+        game = new Game();
+        game.setPreferredSize(new Dimension(200, 200));
+        game.setLayout(null);
         System.out.println("game.block.shape : " +game.block.shape);
-//        Game game1 = new Game();
-//        System.out.println("game1.block.shape : " +game1.block.shape);
-        setContentPane(game); // KeyPanel설정
-//        setContentPane(game1);
-        game.setPreferredSize(new Dimension(SIZE * X,SIZE * Y));
-        game.setLocation(SIZE * X, SIZE * Y);
-//        game1.setLocation(0,0);
-//        game1.setPreferredSize(new Dimension(size * X,size * Y));
+        //setContentPane(game); // KeyPanel설정
 
-        setSize(500,500); // siz
-        // e
-
-        setResizable(true);
-        setVisible(true); // 표시여부
-
-        game.requestFocus(); // 권한 요청
-        this.setLocationRelativeTo(null);
+        add(game);
+        game.requestFocus();                // 키 입력 포커스 요청
+        setVisible(true);                   // JFrame 창 띄우기
     }
-    public int getWidth(){
-        return SIZE * X;
-    }
+
 }

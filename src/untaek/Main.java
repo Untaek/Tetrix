@@ -24,7 +24,6 @@ public class Main {
                 break;
             case "t2":
                 ClientHandler handler = new ClientHandler(channel -> {});
-
                 break;
             case "t3":
                 Server server = new Server();
@@ -34,7 +33,7 @@ public class Main {
             case "db":
                 new DB();
                 break;
-            case "game":
+            case "g":
               new MyWindow();
             default: break;
         }

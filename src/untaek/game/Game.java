@@ -4,6 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -11,44 +13,52 @@ public class Game extends JPanel {
     static int rows = 25;   // 20 + 1 + 4
     static int columns = 12; // 10 + 2
 
-    static int MARGINE = 30;
-    static int SIZE = 20;
+    static int SIZE = 22;
     static int MAX_HEIGHT = SIZE * (rows + 2);
     static int MAX_WIDTH = SIZE * (columns + 1);
     static int HEIGHT = SIZE * (rows - 5) ;
     static int WIDTH = SIZE * (columns - 2);
-
+    static int MARGIN_X = 12 * SIZE;
+    static int MARGIN_Y = 5 * SIZE;
     Box [][] save_field = new Box[rows][columns];
     Box [][] field = new Box[rows][columns];
     Box [][] field_ = new Box[rows][columns];
 
     public Block block;
-    Block block_new;
-    boolean fall_complete;
-    boolean fall_block_result;
-    boolean timer_flag = true;
-    boolean gameover_flag = false;
+    public Block block_pre_1;
+    public Block block_pre_2;
+    public Block block_pre_3;
+    public Block block_pre_4;
 
-    int gameover_row=rows-1;
+    public boolean fall_complete;
+    public boolean fall_block_result;
+    public boolean timer_flag = true;
+    public boolean gameover_flag = false;
 
-    int count=0;
-    int delay = 500;
-    private Timer timer;
+    public int gameover_row=rows-1;
 
-    TimerTask task;
+    public int count=0;
+    public int delay = 500;
 
-    KeyAdapter keyadapter;
+    public  Timer timer;
+    public TimerTask task;
+
+    public static KeyAdapter keyadapter;
     public Game() {
-
         // 초기화
         reset_field(field);
         reset_field(save_field);
         reset_field_();
 
-        this.addKeyListener(keyadapter = new MyKeyAdapter());
+        keyadapter = new MyKeyAdapter();
+        this.addKeyListener(keyadapter);
+        this.setFocusable(true);
 
         block = new Block();
-        block_new = new Block();
+        block_pre_1 = new Block();
+        block_pre_2 = new Block();
+        block_pre_3 = new Block();
+        block_pre_4 = new Block();
 
         // field_ 에 block 넣기
         fill_field_();
@@ -64,10 +74,7 @@ public class Game extends JPanel {
             }
         };
         timer = new Timer();
-        timer.schedule(task,0,delay);
-
-
-    }
+        timer.schedule(task,0,delay);    }
 
     public void paintComponent(Graphics g){
 
@@ -76,14 +83,35 @@ public class Game extends JPanel {
         if(gameover_flag){
             gameover_effect();
         }
-        draw_Box(g);
+        draw_Preview(g);
+        draw_Field(g);
+        draw_Field_Border(g);
         repaint();
         invalidate();
 
     }
-    public void draw_Box(Graphics g){
-        for(int x = 0; x < columns; x++){     // 0~ 11
-            for (int y = 4; y < rows; y++){   // 4~ 24
+
+    public void draw_Field_Border(Graphics g){
+        g.setColor(Color.BLACK);
+
+        // top border
+        g.fillRect(SIZE/2, 0, (columns-1) *SIZE,SIZE/2);
+        g.drawRect(SIZE/2, 0, (columns-1) *SIZE,SIZE/2);
+
+        // bottom border
+        g.fillRect(SIZE/2, SIZE * (rows-4) -SIZE/2, (columns-1) *SIZE,SIZE/2);
+        g.drawRect(SIZE/2, SIZE * (rows-4) -SIZE/2, (columns-1) *SIZE,SIZE/2);
+
+        // left border
+        g.fillRect(0, 0, SIZE/2, (rows)*SIZE);
+        g.drawRect(SIZE/2, SIZE * (rows-4) -SIZE/2, (columns-1) *SIZE,SIZE/2);
+
+        // right border
+    }
+
+    public void draw_Field(Graphics g){
+        for(int x = 1; x < columns-1; x++){     // 0~ 11
+            for (int y = 4; y < rows-1; y++){   // 4~ 24
                 if(field[y][x].num == 1){
                     switch (field[y][x].color) {
                         case -2:    // Gray
@@ -117,10 +145,80 @@ public class Game extends JPanel {
                             g.setColor(Color.ORANGE);
                             break;
                     }
-                    g.fillRect(SIZE/2 + SIZE * x, SIZE/2 + SIZE * (y-4), SIZE,SIZE);
+                    g.fillRect(SIZE * x, SIZE/2 + SIZE * (y-4), SIZE,SIZE);
                     g.setColor(Color.BLACK);
-                    g.drawRect(SIZE/2 + SIZE * x, SIZE/2 + SIZE * (y-4), SIZE,SIZE);
+                    g.drawRect(SIZE * x, SIZE/2 + SIZE * (y-4), SIZE,SIZE);
                 }
+            }
+        }
+    }
+
+
+    public void draw_Preview(Graphics g) {
+        draw_Block(g,1);    // pre1
+        draw_Block(g,2);    // pre2
+        draw_Block(g,3);    // pre3
+        draw_Block(g,4);    // pre4
+    }
+
+    public void draw_Block(Graphics g, int block_num){
+
+        Block block_pre = new Block();
+        int margin_y = 0;
+        switch (block_num){
+            case 1:
+                block_pre = block_pre_1;
+                margin_y = 0;
+                break;
+            case 2:
+                block_pre= block_pre_2;
+                margin_y = 5;
+                break;
+            case 3:
+                block_pre = block_pre_3;
+                margin_y = 10;
+                break;
+            case 4:
+                block_pre = block_pre_4;
+                margin_y = 15;
+                break;
+        }
+
+
+
+
+        for(int x = 0; x < block_pre.area_length; x++){     // 0~ 11
+            for (int y = 0; y < block_pre.area_length; y++){   // 4~ 24
+                if(block_pre.area[y][x].num == 1) {
+                    switch (block_pre.area[y][x].color) {
+                        case 1:     //  Red (255,0,0)
+                            g.setColor(Color.RED);
+                            break;
+                        case 2:     //  Yellow (255, 212, 0)
+                            g.setColor(Color.YELLOW);
+                            break;
+                        case 3:     //  Blue    (0, 153, 255)
+                            g.setColor(Color.BLUE);
+                            break;
+                        case 4:     // Green    (0, 153, 0)
+                            g.setColor(Color.GREEN);
+                            break;
+                        case 5:     //  Pink    (255, 144, 190)
+                            g.setColor(Color.PINK);
+                            break;
+                        case 6:     //  Purple  (128, 0, 255)
+                            g.setColor(new Color(128, 0, 255));
+                            break;
+                        case 7:     //  Orange  (255, 127, 0)
+                            g.setColor(Color.ORANGE);
+                            break;
+                    }
+
+                    g.fillRect(SIZE / 2 + SIZE * x + MARGIN_X, SIZE / 2 + SIZE * (y + margin_y), SIZE, SIZE);
+                    g.setColor(Color.BLACK);
+                    g.drawRect(SIZE / 2 + SIZE * x + MARGIN_X, SIZE / 2 + SIZE * (y + margin_y), SIZE, SIZE);
+                }
+
             }
         }
     }
@@ -270,7 +368,7 @@ public class Game extends JPanel {
 
         }else{                      // 2가 발견되면 다시 바꿈
             return_field();     // field - field_
-            reset_field_();     // field = 0
+            reset_field_();     // field_ = 0
             switch(a){
                 case 0:             // fall block
                     fall_block_result = false;
@@ -278,8 +376,6 @@ public class Game extends JPanel {
                     block.row= block.row - 1;
                     fill_field_();          //  field_ = 0 + block
                     fill_field();           // field = field + field_
-                    explode_block();
-                    save_field();
                     if (confirm_gameover()) {
                         System.out.println("*****************GAME OVER *****************");
                         this.removeKeyListener(keyadapter);
@@ -287,22 +383,34 @@ public class Game extends JPanel {
                         timer.purge();
                         return;
                     } else {
-                        block = block_new;
-                        block_new = new Block();
+                        block = block_pre_1;
+                        block_pre_1 = block_pre_2;
+                        block_pre_2 = block_pre_3;
+                        block_pre_3 = block_pre_4;
+                        block_pre_4 = new Block();
                     }
+
+                    explode_block();
+                    save_field();
+
                     return;
                 case 1:             // left
                     block.column = block.column + 1;
+                    fill_field_();          //  field_ = 0 + block
+                    fill_field();           // field = field + field_
                     break;
                 case 2:             // right
                     block.column = block.column - 1;
+                    fill_field_();          //  field_ = 0 + block
+                    fill_field();           // field = field + field_
                     break;
                 case 3:             // up
                     block.return_block();
+                    fill_field_();          //  field_ = 0 + block
+                    fill_field();           // field = field + field_
                     break;
             }
-            fill_field_();          //  field_ = 0 + block
-            fill_field();           // field = field + field_
+
         }
         print_field(field);
     }
@@ -411,11 +519,14 @@ public class Game extends JPanel {
                     while (fall_block()){
                     }
 
-                    block_new = new Block();
+                    block_pre_1 = block_pre_2;
+                    block_pre_2 = block_pre_3;
+                    block_pre_3 = block_pre_4;
+                    block_pre_4 = new Block();
                     break;
             }
-
         }
+
     }
 
 }

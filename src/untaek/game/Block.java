@@ -1,8 +1,12 @@
 package untaek.game;
 
+import javax.swing.*;
+import java.awt.*;
+import java.util.Arrays;
 import java.util.Random;
 
 public class Block {
+    static int SIZE = Game.SIZE;
     Random rand;
 
     Box[][] area;
@@ -11,34 +15,53 @@ public class Block {
     public int degree_max;
     int degree;//0~3
 
+    boolean [] bag = new boolean[7];
+    boolean [] bag_ = new boolean[7];
+
     int row;
     int column;
 
-    int area_length;
+    public int area_length;
 
     public Block(){
         rand = new Random();
-        shape = rand.nextInt(7)+1;
+
+        choose_shape();
+
         setting();
-        reset_value();
+        reset_area();
         set_value(this.shape, this.degree);
+    }
+    public void choose_shape(){
+        if(bag.equals(bag_)){       // 가방 모두 사용
+            System.out.println("가방 모두 사용");
+            Arrays.fill(bag,Boolean.FALSE);
+        }
+
+        while(Boolean.TRUE){
+            shape = rand.nextInt(7)+1;
+            if(bag[shape-1] == Boolean.FALSE){
+                bag[shape-1] = Boolean.TRUE;
+                break;
+            }
+        }
     }
 
     public void turn_block(){
         this.degree = this.degree + 1;
-        reset_value();
+        reset_area();
         set_value(this.shape, this.degree);
     }
 
     public void return_block(){
         this.degree = this.degree - 1;
-        reset_value();
+        reset_area();
         set_value(this.shape, this.degree);
     }
 
-
     public void setting(){
-
+        Arrays.fill(bag, Boolean.FALSE);
+        Arrays.fill(bag_, Boolean.TRUE);
         // degree_max
         if(this.shape ==1 || this.shape == 4 || this.shape == 5){
             this.degree_max=2;
@@ -63,7 +86,7 @@ public class Block {
         area = new Box[area_length][area_length];
     }
 
-    public void reset_value(){
+    public void reset_area(){
         for (int i = 0; i < area_length; i++) {
             for (int j = 0; j < area_length; j++) {
                 box = new Box(0,0);
