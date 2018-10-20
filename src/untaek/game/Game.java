@@ -103,10 +103,12 @@ public class Game extends JPanel {
         g.drawRect(SIZE/2, SIZE * (rows-4) -SIZE/2, (columns-1) *SIZE,SIZE/2);
 
         // left border
-        g.fillRect(0, 0, SIZE/2, (rows)*SIZE);
-        g.drawRect(SIZE/2, SIZE * (rows-4) -SIZE/2, (columns-1) *SIZE,SIZE/2);
+        g.fillRect(SIZE/2, 0, SIZE/2, (rows-4)*SIZE);
+        g.drawRect(SIZE/2, 0, SIZE/2, (rows-4)*SIZE);
 
         // right border
+        g.fillRect((columns-1) *SIZE, 0, SIZE/2, (rows-4)*SIZE);
+        g.drawRect((columns-1) *SIZE, 0, SIZE/2, (rows-4)*SIZE);
     }
 
     public void draw_Field(Graphics g){
