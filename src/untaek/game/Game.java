@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Game extends JPanel {
+public class Game extends JPanel{
     static int rows = 25;   // 20 + 1 + 4
     static int columns = 12; // 10 + 2
 
@@ -18,7 +18,7 @@ public class Game extends JPanel {
     static int MAX_WIDTH = SIZE * (columns + 1);
     static int HEIGHT = SIZE * (rows - 5) ;
     static int WIDTH = SIZE * (columns - 2);
-    static int MARGIN_X = 12 * SIZE;
+    static int MARGIN_X = 13 * SIZE;
     static int MARGIN_Y = 5 * SIZE;
     Box [][] save_field = new Box[rows][columns];
     Box [][] field = new Box[rows][columns];
@@ -165,7 +165,7 @@ public class Game extends JPanel {
 
     public void draw_Block(Graphics g, int block_num){
 
-        Block block_pre = new Block();
+        Block block_pre = null;
         int margin_y = 0;
         switch (block_num){
             case 1:
@@ -185,9 +185,6 @@ public class Game extends JPanel {
                 margin_y = 15;
                 break;
         }
-
-
-
 
         for(int x = 0; x < block_pre.area_length; x++){     // 0~ 11
             for (int y = 0; y < block_pre.area_length; y++){   // 4~ 24
@@ -341,7 +338,7 @@ public class Game extends JPanel {
     }
     public void run_(){
         fall_block();
-        print_field(field);
+        //print_field(field);
     }
     public void block_event(int a){
         load_field();               // field = savefield
@@ -385,11 +382,7 @@ public class Game extends JPanel {
                         timer.purge();
                         return;
                     } else {
-                        block = block_pre_1;
-                        block_pre_1 = block_pre_2;
-                        block_pre_2 = block_pre_3;
-                        block_pre_3 = block_pre_4;
-                        block_pre_4 = new Block();
+                    block_pre_change();
                     }
 
                     explode_block();
@@ -414,8 +407,10 @@ public class Game extends JPanel {
             }
 
         }
-        print_field(field);
+        //print_field(field);
     }
+
+
 
     public void explode_block(){
         int total;
@@ -459,6 +454,13 @@ public class Game extends JPanel {
         }
     }
 
+    public void block_pre_change(){
+        block = block_pre_1.clone();
+        block_pre_1 = block_pre_2.clone();
+        block_pre_2 = block_pre_3.clone();
+        block_pre_3 = block_pre_4.clone();
+        block_pre_4 = new Block();
+    }
 
     public class MyKeyAdapter extends KeyAdapter {
         @Override
@@ -521,10 +523,6 @@ public class Game extends JPanel {
                     while (fall_block()){
                     }
 
-                    block_pre_1 = block_pre_2;
-                    block_pre_2 = block_pre_3;
-                    block_pre_3 = block_pre_4;
-                    block_pre_4 = new Block();
                     break;
             }
         }

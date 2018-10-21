@@ -5,7 +5,7 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Block {
+public class Block implements Cloneable {
     static int SIZE = Game.SIZE;
     Random rand;
 
@@ -15,35 +15,58 @@ public class Block {
     public int degree_max;
     int degree;//0~3
 
-    boolean [] bag = new boolean[7];
-    boolean [] bag_ = new boolean[7];
-
     int row;
     int column;
+
+    public static boolean [] bag = {false,false,false,false,false,false,false};
+
+    boolean full_flag;
 
     public int area_length;
 
     public Block(){
         rand = new Random();
-
         choose_shape();
 
         setting();
         reset_area();
         set_value(this.shape, this.degree);
     }
-    public void choose_shape(){
-        if(bag.equals(bag_)){       // 가방 모두 사용
-            System.out.println("가방 모두 사용");
-            Arrays.fill(bag,Boolean.FALSE);
-        }
 
+    public Block clone(){
+        Block b = null;
+        try{
+            b = (Block)super.clone();
+        }catch (Exception e){}
+        return b;
+    }
+
+    public void choose_shape(){
         while(Boolean.TRUE){
             shape = rand.nextInt(7)+1;
+
             if(bag[shape-1] == Boolean.FALSE){
                 bag[shape-1] = Boolean.TRUE;
                 break;
             }
+        }
+        System.out.print("bag : [ ");
+        for(int i = 0; i<7; i++){
+            System.out.print("  "+bag[i] + "  ");
+        }
+
+        System.out.println("] \n shape : " + shape);
+        full_flag = true;
+        for(Boolean value : bag){
+            if(!value){ // value = unuse
+                full_flag = false;
+                break;
+            }
+        }
+
+        if(full_flag){
+            System.out.println("full");
+            Arrays.fill(bag, Boolean.FALSE);
         }
     }
 
@@ -60,8 +83,6 @@ public class Block {
     }
 
     public void setting(){
-        Arrays.fill(bag, Boolean.FALSE);
-        Arrays.fill(bag_, Boolean.TRUE);
         // degree_max
         if(this.shape ==1 || this.shape == 4 || this.shape == 5){
             this.degree_max=2;

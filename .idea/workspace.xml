@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="1a3cf999-1236-4e18-b4a5-e03005e087b5" name="Default Changelist" comment="merged game branch">
+    <list default="true" id="1a3cf999-1236-4e18-b4a5-e03005e087b5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/untaek/game/Block.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/untaek/game/Block.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/untaek/game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/untaek/game/Game.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -78,14 +79,14 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="5349" />
-          <entry key="txt" value="26" />
+          <entry key="java" value="6585" />
+          <entry key="txt" value="46" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="5349" />
-          <entry key="PLAIN_TEXT" value="26" />
+          <entry key="JAVA" value="6585" />
+          <entry key="PLAIN_TEXT" value="46" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.lifecycle.project">
@@ -102,21 +103,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/untaek/PlayerPanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="342">
+            <state relative-caret-position="74">
               <caret line="21" column="52" lean-forward="true" selection-start-line="21" selection-start-column="52" selection-end-line="21" selection-end-column="52" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/untaek/game/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="418" lean-forward="true" selection-start-line="418" selection-end-line="418" />
+            <state relative-caret-position="134">
+              <caret line="250" column="27" selection-start-line="250" selection-start-column="16" selection-end-line="250" selection-end-column="27" />
               <folding>
-                <element signature="e#4456#6709#0" />
+                <element signature="e#1263#2012#0" />
+                <element signature="e#1797#1944#0" expanded="true" />
+                <element signature="e#1943#1944#0" expanded="true" />
+                <element signature="e#2018#2277#0" />
+                <element signature="e#2316#2543#0" />
+                <element signature="e#2283#4526#0" />
                 <element signature="e#9115#9300#0" />
-                <element signature="e#10409#13356#0" />
+                <element signature="e#9521#9774#0" />
+                <element signature="e#9779#10032#0" />
+                <element signature="e#10038#10324#0" />
+                <element signature="e#10329#10404#0" />
                 <element signature="e#12994#13587#0" />
                 <element signature="e#13961#14263#0" />
                 <element signature="e#14269#14527#0" />
@@ -125,11 +134,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/untaek/game/Block.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-513">
-              <caret line="9" column="16" lean-forward="true" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
+            <state relative-caret-position="58">
+              <caret line="27" column="28" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#set_value#0;class#Block#0" />
@@ -150,12 +159,8 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>left</find>
-      <find>timer_flag</find>
-      <find>aa</find>
       <find>aaaa</find>
       <find>resize</find>
-      <find>row</find>
       <find>keyadapter</find>
       <find>g</find>
       <find>component</find>
@@ -165,9 +170,25 @@
       <find>gameover_flag</find>
       <find>confirm_gameover</find>
       <find>area</find>
-      <find>pre</find>
       <find>draw_Field</find>
       <find>block_pre_1</find>
+      <find>new Block</find>
+      <find>row</find>
+      <find>pre</find>
+      <find>block=</find>
+      <find>block_pre_2</find>
+      <find>new Block()</find>
+      <find>block_pre</find>
+      <find>block =</find>
+      <find>block_pre_change</find>
+      <find>Block</find>
+      <find>Block(</find>
+      <find>가방</find>
+      <find>다찼음</find>
+      <find>print</find>
+      <find>full</find>
+      <find>print_field</find>
+      <find>bag</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -203,17 +224,17 @@
         <option value="$PROJECT_DIR$/src/untaek/Main.java" />
         <option value="$PROJECT_DIR$/src/untaek/game/MyWindow.java" />
         <option value="$PROJECT_DIR$/src/untaek/Client.java" />
-        <option value="$PROJECT_DIR$/src/untaek/game/Block.java" />
         <option value="$PROJECT_DIR$/src/untaek/BasePanel.java" />
         <option value="$PROJECT_DIR$/src/untaek/game/Game.java" />
+        <option value="$PROJECT_DIR$/src/untaek/game/Block.java" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="592" />
+    <option name="x" value="350" />
     <option name="y" value="-8" />
     <option name="width" value="734" />
-    <option name="height" value="867" />
+    <option name="height" value="758" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -497,14 +518,20 @@
       <option name="project" value="LOCAL" />
       <updated>1540038896125</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="game border complete">
+      <created>1540040209756</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1540040209756</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.24283667" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.24283667" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -513,13 +540,13 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49426934" visible="true" weight="0.34547907" />
-      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.497851" weight="0.3994602" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.493553" visible="true" weight="0.34412956" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49713466" weight="0.3994602" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49856734" weight="0.32928476" />
-      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.5057307" side_tool="true" visible="true" weight="0.34547907" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.506447" side_tool="true" visible="true" weight="0.34412956" />
       <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49928367" weight="0.32928476" />
       <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.497851" weight="0.32793522" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -542,7 +569,20 @@
     <MESSAGE value="Server Packet designing; README.md" />
     <MESSAGE value="vcs.xml" />
     <MESSAGE value="merged game branch" />
-    <option name="LAST_COMMIT_MESSAGE" value="merged game branch" />
+    <MESSAGE value="game border complete" />
+    <option name="LAST_COMMIT_MESSAGE" value="game border complete" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/untaek/game/Game.java</url>
+          <line>167</line>
+          <properties />
+          <option name="timeStamp" value="45" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/README.md">
@@ -668,34 +708,42 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/untaek/PlayerPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="342">
+        <state relative-caret-position="74">
           <caret line="21" column="52" lean-forward="true" selection-start-line="21" selection-start-column="52" selection-end-line="21" selection-end-column="52" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/untaek/game/Block.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-513">
-          <caret line="9" column="16" lean-forward="true" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#set_value#0;class#Block#0" />
-            <element signature="method#print_block#0;class#Block#0" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/untaek/game/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="418" lean-forward="true" selection-start-line="418" selection-end-line="418" />
+        <state relative-caret-position="134">
+          <caret line="250" column="27" selection-start-line="250" selection-start-column="16" selection-end-line="250" selection-end-column="27" />
           <folding>
-            <element signature="e#4456#6709#0" />
+            <element signature="e#1263#2012#0" />
+            <element signature="e#1797#1944#0" expanded="true" />
+            <element signature="e#1943#1944#0" expanded="true" />
+            <element signature="e#2018#2277#0" />
+            <element signature="e#2316#2543#0" />
+            <element signature="e#2283#4526#0" />
             <element signature="e#9115#9300#0" />
-            <element signature="e#10409#13356#0" />
+            <element signature="e#9521#9774#0" />
+            <element signature="e#9779#10032#0" />
+            <element signature="e#10038#10324#0" />
+            <element signature="e#10329#10404#0" />
             <element signature="e#12994#13587#0" />
             <element signature="e#13961#14263#0" />
             <element signature="e#14269#14527#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/untaek/game/Block.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="58">
+          <caret line="27" column="28" selection-start-line="27" selection-start-column="28" selection-end-line="27" selection-end-column="28" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#set_value#0;class#Block#0" />
+            <element signature="method#print_block#0;class#Block#0" />
           </folding>
         </state>
       </provider>
