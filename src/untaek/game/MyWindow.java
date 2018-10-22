@@ -26,7 +26,7 @@ public class MyWindow extends JFrame {
         this.setLocationRelativeTo(null);   // 모니터 가운데 띄우기
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     // 폼 종료시 프로그램 종료
 
-        game = new Game();
+        game = new Game(0);
         game.setPreferredSize(new Dimension(200, 200));
         game.setLayout(null);
         System.out.println("game.block.shape : " +game.block.shape);

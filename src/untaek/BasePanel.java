@@ -36,7 +36,7 @@ public class BasePanel extends JPanel {
         add(new PlayerPanel());
 
         user.add(BorderLayout.NORTH, top);
-        user.add(game= new Game());
+        user.add(BorderLayout.CENTER,new Game(0));
         user.add(BorderLayout.SOUTH, bottom);
 
 
