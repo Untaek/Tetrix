@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Hashtable;
 
 public class Server {
 
@@ -22,15 +23,20 @@ public class Server {
   EventLoopGroup boss;
   EventLoopGroup worker;
 
+  Hashtable<Integer, User> users;
+  Hashtable<Integer, Room> rooms;
 
+  final int MAXIMUM = 6;
 
   public Server() {
     init();
   }
 
   private void init() {
-    db = new DB();
+    users = new Hashtable<>();
+    rooms = new Hashtable<>();
 
+    db = new DB();
     boss = new NioEventLoopGroup();
     worker = new NioEventLoopGroup();
 
@@ -86,68 +92,164 @@ public class Server {
     }
   }
 
-  private Object onPacket(Packet packet) {
+  private Object onPacket(BasePacket packet, Channel ch) {
     System.out.println(packet.toString());
-    Object object = packet.getObject();
 
     switch (packet.getType()) {
-      case "login": return this.login((Packet.Login) object);
-      case "start": return this.startGame((Packet.StartGame) object);
-      //case "finish": return this.finishGame((Packet.FinishGame) object);
-      case "snapshot": return this.broadcastSnapshot((Packet.Snapshot) object);
-      case "pop": return this.pop((Packet.Pop) object);
-      case "chat": return this.chat((Packet.Chat) object);
-      case "lose": return this.lose((Packet.Lose) object);
+      case "login": return this.login((Login) packet, ch);
+      case "start": return this.startGame((StartGame) packet);
+      case "snapshot": return this.broadcastSnapshot((Snapshot) packet);
+      case "pop": return this.pop((Pop) packet);
+      case "chat": return this.chat((Chat) packet);
+      case "join": return this.join((Join) packet);
       default:
     }
 
     return null;
   }
 
-  private User login(Packet.Login p) {
+  private void broadcast(BasePacket packet, Room room) {
+    room.getUsers().forEach(u -> u.getChannel().write(packet));
+  }
+
+  private void write(BasePacket packet, Channel channel) {
+    channel.write(packet);
+  }
+
+  private int login(Login p, Channel ch) {
     String name = p.name;
     String password = p.password;
+
+    PreparedStatement st;
+    ResultSet findResult;
+
+    int id;
+    int wins;
+    int loses;
 
     try {
       Connection c = db.getConnection();
 
-      PreparedStatement st = c.prepareStatement("SELECT * FROM tbl_user WHERE name = ? AND password = ?");
+      st = c.prepareStatement("SELECT * FROM tbl_user WHERE name = ? AND password = ?");
       st.setString(0, name);
       st.setString(1, password);
-      ResultSet rs = st.executeQuery();
+      findResult = st.executeQuery();
 
-      if(rs.next()) {
+      if(findResult.next()) {
         System.out.println(String.format("Login success name: %s", name));
       }
+      else {
+        st = c.prepareStatement("INSERT INTO tbl_user VALUES (default, ?, ?)");
+        st.setString(0, name);
+        st.setString(1, password);
+
+        if(st.execute()) {
+          st = c.prepareStatement("SELECT * FROM tbl_user WHERE name = ? AND password = ?");
+          st.setString(0, name);
+          st.setString(1, password);
+          findResult = st.executeQuery();
+        }
+      }
+
+      id = findResult.getInt("id");
+      wins = findResult.getInt("wins");
+      loses = findResult.getInt("loses");
+
+      User user = new User(name, id, ch, ch.id().asShortText(), wins, loses);
+      users.put(user.getId(), user);
+
+      c.close();
+
+      Room room;
+
+      room = this.rooms.values()
+          .stream()
+          .filter((a) -> a.getUsers().size() < MAXIMUM)
+          .findFirst()
+          .orElse(null);
+
+      if(room == null) {
+        room = new Room();
+        room.getUsers().add(user);
+        this.rooms.put((int)(Math.random() * 100000), room);
+      }
+
+      write(
+          PacketManager.getInstance()
+              .users((UserStatus[]) room.getUsers().toArray()),
+          user.getChannel()
+      );
+
+      broadcast(
+          PacketManager.getInstance()
+              .join(user.getUserStatus()), room);
+
+      return 1;
     } catch (SQLException e) {
       e.printStackTrace();
     }
 
+    ch.write(PacketManager.getInstance().fail("login failed"));
     System.out.println(String.format("Login failed name: %s, password: %s", name, password));
-    return null;
-  }
-
-  private int startGame(Packet.StartGame p) {
     return 0;
   }
 
-  private int broadcastSnapshot(Packet.Snapshot p) {
+  private UserStatus join(Join p) {
+    this.rooms.get(p.gameId)
+        .getUsers()
+        .forEach(u -> u.getChannel().write(p));
+
+    return users.get(p.id).getUserStatus();
+  }
+
+  private int startGame(StartGame p) {
+    Room room = this.rooms.get(p.gameId);
+    room.setStatus(Room.START);
+    room.getLosers().clear();
+    room.getUsers().forEach(u -> u.getChannel().write(p));
+    return Room.START;
+  }
+
+  private int broadcastSnapshot(Snapshot p) {
+    Room room = this.rooms.get(p.gameId);
+    room.getUsers().forEach((u) -> u.getChannel().write(p));
     return 0;
   }
 
-  private int pop(Packet.Pop p) {
+  private int pop(Pop p) {
+    Room room = this.rooms.get(p.gameId);
+
+    room.getUsers().forEach(u -> {
+      int amount = 0;
+      switch (p.amount) {
+        case 1: break;
+        case 2: amount = 1; break;
+        case 3: amount = 2; break;
+        case 4: amount = 4; break;
+      }
+
+      if(amount > 0 && p.id != u.getId()) {
+        u.getChannel().write(PacketManager.getInstance().attack(amount));
+      }
+    });
+
     return 0;
   }
 
-  private int chat(Packet.Chat p) {
+  private int chat(Chat p) {
+    rooms.get(p.gameId).getUsers().forEach(u -> u.getChannel().write(p));
     return 0;
   }
 
-  private int lose(Packet.Lose p) {
-    return 0;
-  }
+  private int lose(Lose p) {
+    Room room = rooms.get(p.gameId);
+    room.getUsers().forEach(u -> u.getChannel().write(p));
+    room.getLosers().add(p.id);
 
-  private int finishGame(Packet.FinishGame p) {
+    if(room.getUsers().size() == room.getLosers().size() - 1) {
+      room.getUsers().forEach(u -> u.getChannel().write(PacketManager.getInstance().finishGame()));
+    }
+
     return 0;
   }
 
@@ -155,13 +257,14 @@ public class Server {
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
+      // 로그인 처리, 최초 접속
       System.out.println(ctx.channel().id().asShortText());
       super.channelActive(ctx);
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-      onPacket((Packet) msg);
+      onPacket((BasePacket) msg, ctx.channel());
     }
   }
 }
