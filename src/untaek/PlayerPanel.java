@@ -1,7 +1,6 @@
 package untaek;
 
-import untaek.game.Game;
-import untaek.game.Receive_Field;
+import untaek.game.ReceiveField;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -55,11 +54,11 @@ public class PlayerPanel extends JPanel {
         add(player4);
         add(player5);
 
-        player1.add(BorderLayout.CENTER,new Receive_Field(1));
-        player2.add(BorderLayout.CENTER,new Receive_Field(2));
-        player3.add(BorderLayout.CENTER,new Receive_Field(3));
-        player4.add(BorderLayout.CENTER,new Receive_Field(4));
-        player5.add(BorderLayout.CENTER,new Receive_Field(5));
+        player1.add(BorderLayout.CENTER,new ReceiveField(1));
+        player2.add(BorderLayout.CENTER,new ReceiveField(2));
+        player3.add(BorderLayout.CENTER,new ReceiveField(3));
+        player4.add(BorderLayout.CENTER,new ReceiveField(4));
+        player5.add(BorderLayout.CENTER,new ReceiveField(5));
 
         player1.add(BorderLayout.NORTH, record1);
         player2.add(BorderLayout.NORTH, record2);

@@ -5,20 +5,18 @@ import untaek.BasePanel;
 import javax.swing.*;
 import java.awt.*;
 
-public class Receive_Field extends JPanel {
-    static int rows = 25;   // 20 + 1 + 4
-    static int columns = 12; // 10 + 2
+public class ReceiveField extends JPanel {
+    private static final int ROWS = 25;   // 20 + 1 + 4
+    private static final int COLUMNS = 12; // 10 + 2
+    private static final int OTHER_MARGIN_X = 25;                 // othter player field's margin X
+    private static final int OTHER_MARGIN_Y = 25;                 // othter player field's margin Y
+    private static final int SIZE = 22;
 
-    static int SIZE = 22;
+    private Box[][] field = null;
 
-    Box[][] field = null;
+    private int player_num;
 
-    static int OTHER_MARGIN_X = 25;                 // othter player field's margin X
-    static int OTHER_MARGIN_Y = 25;                 // othter player field's margin Y
-
-    int player_num;
-
-    public Receive_Field(int player_num){
+    public ReceiveField(int player_num){
         this.player_num = player_num;
     }
 
@@ -45,38 +43,38 @@ public class Receive_Field extends JPanel {
                 break;
         }
 
-        draw_others_Field_Border(g);
-        draw_others_Field(g, field);
+        drawOthersFieldBorder(g);
+        drawOthersField(g, field);
 
         repaint();
         invalidate();
     }
 
     // draw other Field's Border
-    public void draw_others_Field_Border(Graphics g){
+    public void drawOthersFieldBorder(Graphics g){
         g.setColor(Color.BLACK);
 
         // top border
-        g.fillRect(SIZE/4 +OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, (columns-1) *(SIZE/2),SIZE/4);
-        g.drawRect(SIZE/4+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, (columns-1) *(SIZE/2),SIZE/4);
+        g.fillRect(SIZE/4 +OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, (COLUMNS -1) *(SIZE/2),SIZE/4);
+        g.drawRect(SIZE/4+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, (COLUMNS -1) *(SIZE/2),SIZE/4);
 
         // bottom border
-        g.fillRect(SIZE/4+OTHER_MARGIN_X, (SIZE/2) * (rows-4)+OTHER_MARGIN_Y, (columns-1) *(SIZE/2),SIZE/4);
-        g.drawRect(SIZE/4+OTHER_MARGIN_X, (SIZE/2) * (rows-4)+OTHER_MARGIN_Y, (columns-1) *(SIZE/2),SIZE/4);
+        g.fillRect(SIZE/4+OTHER_MARGIN_X, (SIZE/2) * (ROWS -4)+OTHER_MARGIN_Y, (COLUMNS -1) *(SIZE/2),SIZE/4);
+        g.drawRect(SIZE/4+OTHER_MARGIN_X, (SIZE/2) * (ROWS -4)+OTHER_MARGIN_Y, (COLUMNS -1) *(SIZE/2),SIZE/4);
 
         // left border
-        g.fillRect(SIZE/4+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (rows-4)*(SIZE/2));
-        g.drawRect(SIZE/4+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (rows-4)*(SIZE/2));
+        g.fillRect(SIZE/4+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (ROWS -4)*(SIZE/2));
+        g.drawRect(SIZE/4+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (ROWS -4)*(SIZE/2));
 
         // right border
-        g.fillRect((columns-1) *(SIZE/2)+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (rows-4)*(SIZE/2));
-        g.drawRect((columns-1) *(SIZE/2)+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (rows-4)*(SIZE/2));
+        g.fillRect((COLUMNS -1) *(SIZE/2)+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (ROWS -4)*(SIZE/2));
+        g.drawRect((COLUMNS -1) *(SIZE/2)+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (ROWS -4)*(SIZE/2));
     }
 
     // draw ohter Field
-    public void draw_others_Field(Graphics g, Box[][] field){
-        for(int x = 1; x < columns-1; x++){     // 0~ 11
-            for (int y = 4; y < rows-1; y++){   // 4~ 24
+    public void drawOthersField(Graphics g, Box[][] field){
+        for(int x = 1; x < COLUMNS -1; x++){     // 0~ 11
+            for (int y = 4; y < ROWS -1; y++){   // 4~ 24
                 if(field[y][x].num == 1){
                     switch (field[y][x].color) {
                         case -2:    // Gray

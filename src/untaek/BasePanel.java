@@ -18,33 +18,37 @@ import java.util.TimerTask;
 
 public class BasePanel extends JPanel {
     static public Game game;
-    Block block_new;
-    private static int SIZE = 20;
-    private static int X = 13;
-    private static int Y = 22;
+
+    private static final int SIZE = 20;
+    private static final int X = 13;
+    private static final int Y = 22;
     JPanel user;
     JPanel top;
     JPanel bottom;
     static public JLabel score;
     JButton btn_start;
     JButton btn_exit;
+
     public BasePanel() {
 
         setLayout(new BorderLayout());
 
         user = new JPanel();
         user.setLayout(new BorderLayout());
-        user.setBorder(new TitledBorder(new LineBorder(Color.black, 4),"User"));
+        user.setBorder(new TitledBorder(new LineBorder(Color.black, 4), "User"));
         user.setPreferredSize(new Dimension(400, 900));
 
+        game = new Game();
         top = new JPanel();
         bottom = new JPanel();
         add(user, BorderLayout.WEST);
         add(new PlayerPanel());
 
         user.add(BorderLayout.NORTH, top);
-        user.add(BorderLayout.CENTER,game = new Game());
+        user.add(BorderLayout.CENTER, game);
         user.add(BorderLayout.SOUTH, bottom);
+
+        game.game();
 
         score = new JLabel("score");
         btn_start = new JButton("Start");
@@ -62,23 +66,9 @@ public class BasePanel extends JPanel {
                 game.timer.cancel();
                 game.timer.purge();
                 game.removeKeyListener(game.keyadapter);
+
                 game.game();
             }
         });
-
-
-
     }
-
-
-
-
-
-//    public void paintComponent(Graphics g){
-//
-//        super.paintComponent(g);
-//        repaint();
-//        invalidate();
-//
-//    }
 }

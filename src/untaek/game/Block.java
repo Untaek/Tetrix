@@ -1,7 +1,5 @@
 package untaek.game;
 
-import javax.swing.*;
-import java.awt.*;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -31,11 +29,11 @@ public class Block implements Cloneable {
         rand = new Random();
 
 
-        choose_shape();
+        chooseShape();
         setting();
 
-        reset_area();
-        set_value(this.shape, this.degree);
+        resetArea();
+        setValue(this.shape, this.degree);
     }
 
     public Block clone(){
@@ -46,7 +44,7 @@ public class Block implements Cloneable {
         return b;
     }
 
-    public void choose_shape(){
+    public void chooseShape(){
         if(Arrays.equals(bag, bag_)){
             System.out.println("가방 모두 사용");
             Arrays.fill(bag,Boolean.FALSE);
@@ -64,16 +62,16 @@ public class Block implements Cloneable {
 
     }
 
-    public void turn_block(){
+    public void turnBlock(){
         this.degree = this.degree + 1;
-        reset_area();
-        set_value(this.shape, this.degree);
+        resetArea();
+        setValue(this.shape, this.degree);
     }
 
-    public void return_block(){
+    public void returnBlock(){
         this.degree = this.degree - 1;
-        reset_area();
-        set_value(this.shape, this.degree);
+        resetArea();
+        setValue(this.shape, this.degree);
     }
 
     public void setting(){
@@ -102,7 +100,7 @@ public class Block implements Cloneable {
         area = new Box[area_length][area_length];
     }
 
-    public void reset_area(){
+    public void resetArea(){
         for (int i = 0; i < area_length; i++) {
             for (int j = 0; j < area_length; j++) {
                 box = new Box(0,0);
@@ -111,151 +109,151 @@ public class Block implements Cloneable {
         }
     }
 
-    public void set_value(int shape, int degree){
+    public void setValue(int shape, int degree){
         switch (shape) {
             case 1://
                 switch (degree % this.degree_max) {
                     case 0:
-                        set_area(0,1);
-                        set_area(1,1);
-                        set_area(2,1);
-                        set_area(3,1);
+                        setArea(0,1);
+                        setArea(1,1);
+                        setArea(2,1);
+                        setArea(3,1);
                         break;
                     case 1:
-                        set_area(2,0);
-                        set_area(2,1);
-                        set_area(2,2);
-                        set_area(2,3);
+                        setArea(2,0);
+                        setArea(2,1);
+                        setArea(2,2);
+                        setArea(2,3);
                         break;
                 }
                 break;
 
             case 2:
-                set_area(1,1);
-                set_area(1,2);
-                set_area(2,1);
-                set_area(2,2);
+                setArea(1,1);
+                setArea(1,2);
+                setArea(2,1);
+                setArea(2,2);
                 break;
 
             case 3:
                 switch (degree% degree_max) {
                     case 0:
-                        set_area(0,1);
-                        set_area(1,0);
-                        set_area(1,1);
-                        set_area(1,2);
+                        setArea(0,1);
+                        setArea(1,0);
+                        setArea(1,1);
+                        setArea(1,2);
                         break;
                     case 1:
-                        set_area(0,1);
-                        set_area(1,1);
-                        set_area(1,2);
-                        set_area(2,1);
+                        setArea(0,1);
+                        setArea(1,1);
+                        setArea(1,2);
+                        setArea(2,1);
                         break;
                     case 2:
-                        set_area(1,0);
-                        set_area(1,1);
-                        set_area(1,2);
-                        set_area(2,1);
+                        setArea(1,0);
+                        setArea(1,1);
+                        setArea(1,2);
+                        setArea(2,1);
                         break;
                     case 3:
-                        set_area(0,1);
-                        set_area(1,0);
-                        set_area(1,1);
-                        set_area(2,1);
+                        setArea(0,1);
+                        setArea(1,0);
+                        setArea(1,1);
+                        setArea(2,1);
                         break;
                 }
                 break;
             case 4:
                 switch (degree% degree_max) {
                     case 0:
-                        set_area(0,0);
-                        set_area(1,0);
-                        set_area(1,1);
-                        set_area(2,1);
+                        setArea(0,0);
+                        setArea(1,0);
+                        setArea(1,1);
+                        setArea(2,1);
                         break;
                     case 1:
-                        set_area(1,1);
-                        set_area(1,2);
-                        set_area(2,0);
-                        set_area(2,1);
+                        setArea(1,1);
+                        setArea(1,2);
+                        setArea(2,0);
+                        setArea(2,1);
                         break;
                 }
                 break;
             case 5:
                 switch (degree% degree_max) {
                     case 0:
-                        set_area(0,1);
-                        set_area(1,0);
-                        set_area(1,1);
-                        set_area(2,0);
+                        setArea(0,1);
+                        setArea(1,0);
+                        setArea(1,1);
+                        setArea(2,0);
                         break;
                     case 1:
-                        set_area(1,0);
-                        set_area(1,1);
-                        set_area(2,1);
-                        set_area(2,2);
+                        setArea(1,0);
+                        setArea(1,1);
+                        setArea(2,1);
+                        setArea(2,2);
                         break;
                 }
                 break;
             case 6:
                 switch (degree% degree_max) {
                     case 0:
-                        set_area(0,2);
-                        set_area(1,0);
-                        set_area(1,1);
-                        set_area(1,2);
+                        setArea(0,2);
+                        setArea(1,0);
+                        setArea(1,1);
+                        setArea(1,2);
                         break;
                     case 1:
-                        set_area(0,1);
-                        set_area(1,1);
-                        set_area(2,1);
-                        set_area(2,2);
+                        setArea(0,1);
+                        setArea(1,1);
+                        setArea(2,1);
+                        setArea(2,2);
                         break;
                     case 2:
-                        set_area(1,0);
-                        set_area(1,1);
-                        set_area(1,2);
-                        set_area(2,0);
+                        setArea(1,0);
+                        setArea(1,1);
+                        setArea(1,2);
+                        setArea(2,0);
                         break;
                     case 3:
-                        set_area(0,0);
-                        set_area(0,1);
-                        set_area(1,1);
-                        set_area(2,1);
+                        setArea(0,0);
+                        setArea(0,1);
+                        setArea(1,1);
+                        setArea(2,1);
                         break;
                 }
                 break;
             case 7:
                 switch (degree% degree_max) {
                     case 0:
-                        set_area(0,0);
-                        set_area(1,0);
-                        set_area(1,1);
-                        set_area(1,2);
+                        setArea(0,0);
+                        setArea(1,0);
+                        setArea(1,1);
+                        setArea(1,2);
                         break;
                     case 1:
-                        set_area(0,1);
-                        set_area(0,2);
-                        set_area(1,1);
-                        set_area(2,1);
+                        setArea(0,1);
+                        setArea(0,2);
+                        setArea(1,1);
+                        setArea(2,1);
                         break;
                     case 2:
-                        set_area(1,0);
-                        set_area(1,1);
-                        set_area(1,2);
-                        set_area(2,2);
+                        setArea(1,0);
+                        setArea(1,1);
+                        setArea(1,2);
+                        setArea(2,2);
                         break;
                     case 3:
-                        set_area(0,1);
-                        set_area(1,1);
-                        set_area(2,0);
-                        set_area(2,1);
+                        setArea(0,1);
+                        setArea(1,1);
+                        setArea(2,0);
+                        setArea(2,1);
                         break;
                 }
         }
     }
 
-    public void print_block(){
+    public void printBlock(){
         for(int i = 0; i<area_length; i++){
             for(int j = 0; j<area_length; j++){
                 if(area[i][j].num == 1){
@@ -268,7 +266,7 @@ public class Block implements Cloneable {
         }
     }
 
-    public void set_area(int row, int column){
+    public void setArea(int row, int column){
         area[row][column].num = 1;
         area[row][column].color = shape;
     }
