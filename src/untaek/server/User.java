@@ -1,5 +1,6 @@
 package untaek.server;
 
+import com.google.gson.Gson;
 import io.netty.channel.Channel;
 
 import java.net.Socket;
@@ -37,5 +38,10 @@ public class User {
 
   public Channel getChannel() {
     return channel;
+  }
+
+  @Override
+  public String toString() {
+    return String.format("%d %s %s %d %d", id, networkId, name, wins, loses);
   }
 }
