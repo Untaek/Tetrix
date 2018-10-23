@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 import java.util.Hashtable;
 
 public class Server {
@@ -47,8 +48,8 @@ public class Server {
           @Override
           protected void initChannel(SocketChannel socketChannel) throws Exception {
             socketChannel.pipeline().addLast(
-                new ObjectDecoder(ClassResolvers.softCachingResolver(ClassLoader.getSystemClassLoader())),
                 new ObjectEncoder(),
+                new ObjectDecoder(ClassResolvers.softCachingResolver(getClass().getClassLoader())),
                 new ServerHandler()
             );
           }
@@ -56,14 +57,10 @@ public class Server {
         .option(ChannelOption.SO_BACKLOG, 128)
         .childOption(ChannelOption.SO_KEEPALIVE, true);
 
-    try {
-      channelFuture = bootstrap.bind(8765).sync();
+      channelFuture = bootstrap.bind(8765);
 
       System.out.println("Server is bound");
 
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
   }
 
   public void finish() {
@@ -109,11 +106,11 @@ public class Server {
   }
 
   private void broadcast(BasePacket packet, Room room) {
-    room.getUsers().forEach(u -> u.getChannel().write(packet));
+    room.getUsers().forEach(u -> u.getChannel().writeAndFlush(packet));
   }
 
   private void write(BasePacket packet, Channel channel) {
-    channel.write(packet);
+    channel.writeAndFlush(packet);
   }
 
   private int login(Login p, Channel ch) {
@@ -123,6 +120,16 @@ public class Server {
     PreparedStatement st;
     ResultSet findResult;
 
+    String selectSQL = "" +
+        "SELECT * FROM tbl_user " +
+        "INNER JOIN tbl_score " +
+        "ON tbl_user.id = tbl_score.user_id " +
+        "WHERE tbl_user.name = ? AND tbl_user.password = ?";
+
+    String insertSQL = "" +
+        "INSERT INTO tbl_user " +
+        "VALUES (default, ?, ?)";
+
     int id;
     int wins;
     int loses;
@@ -130,32 +137,31 @@ public class Server {
     try {
       Connection c = db.getConnection();
 
-      st = c.prepareStatement("SELECT * FROM tbl_user WHERE name = ? AND password = ?");
-      st.setString(0, name);
-      st.setString(1, password);
+      st = c.prepareStatement(selectSQL);
+      st.setString(1, name);
+      st.setString(2, password);
       findResult = st.executeQuery();
 
-      if(findResult.next()) {
-        System.out.println(String.format("Login success name: %s", name));
-      }
-      else {
-        st = c.prepareStatement("INSERT INTO tbl_user VALUES (default, ?, ?)");
-        st.setString(0, name);
-        st.setString(1, password);
+      if(!findResult.next()) {
+        st = c.prepareStatement(insertSQL);
+        st.setString(1, name);
+        st.setString(2, password);
 
         if(st.execute()) {
-          st = c.prepareStatement("SELECT * FROM tbl_user WHERE name = ? AND password = ?");
-          st.setString(0, name);
-          st.setString(1, password);
+          st = c.prepareStatement(selectSQL);
+          st.setString(1, name);
+          st.setString(2, password);
           findResult = st.executeQuery();
+          findResult.next();
         }
       }
 
       id = findResult.getInt("id");
-      wins = findResult.getInt("wins");
-      loses = findResult.getInt("loses");
+      wins = findResult.getInt("win");
+      loses = findResult.getInt("lose");
 
       User user = new User(name, id, ch, ch.id().asShortText(), wins, loses);
+
       users.put(user.getId(), user);
 
       c.close();
@@ -176,13 +182,16 @@ public class Server {
 
       write(
           PacketManager.getInstance()
-              .users((UserStatus[]) room.getUsers().toArray()),
+              .users(room.getUsersStatus().toArray(new UserStatus[0])),
           user.getChannel()
       );
 
       broadcast(
           PacketManager.getInstance()
               .join(user.getUserStatus()), room);
+
+      System.out.println(String.format("Login success name: %s", name));
+      System.out.println(user.toString());
 
       return 1;
     } catch (SQLException e) {
@@ -259,7 +268,6 @@ public class Server {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
       // 로그인 처리, 최초 접속
       System.out.println(ctx.channel().id().asShortText());
-      super.channelActive(ctx);
     }
 
     @Override

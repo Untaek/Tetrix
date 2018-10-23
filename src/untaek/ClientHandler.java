@@ -32,7 +32,8 @@ public class ClientHandler {
   }
 
   public static String networkId() {
-    return h.context.channel().id().asShortText();
+    //return h.context.channel().id().asShortText();
+    return "asd";
   }
 
   private void init() {
@@ -46,14 +47,14 @@ public class ClientHandler {
             h = new Handler();
 
             socketChannel.pipeline().addLast(
-                new ObjectDecoder(ClassResolvers.softCachingResolver(ClassLoader.getSystemClassLoader())),
                 new ObjectEncoder(),
+                new ObjectDecoder(ClassResolvers.softCachingResolver(getClass().getClassLoader())),
                 h
             );
           }
         });
     try {
-      ChannelFuture f = bootstrap.connect(HOST, PORT).sync();
+      ChannelFuture f = bootstrap.connect(HOST, PORT);
 
       callback.onConnected(f.channel());
 
@@ -70,7 +71,9 @@ public class ClientHandler {
    */
 
   void login(String name, String password) {
-    getHandler().context.channel().write(PacketManager.getInstance().login(name, password));
+    System.out.println(String.format("network id: %s", networkId()));
+    System.out.println(String.format("Try to login: %s, %s", name, password));
+    getHandler().context.writeAndFlush(PacketManager.getInstance().login(name, password));
   }
 
   void pop(int amount) {
@@ -87,6 +90,7 @@ public class ClientHandler {
 
   void chat(String text) {
     getHandler().context.channel().write(PacketManager.getInstance().chat(text));
+
   }
   /**
    *
@@ -95,8 +99,9 @@ public class ClientHandler {
    */
   void onPacket(BasePacket packet) {
     System.out.println(packet.toString());
+
     switch (packet.getType()) {
-      // 로그입
+      // 로그인
       case "login": break;
 
       // 다른 사람 접속
@@ -131,11 +136,11 @@ public class ClientHandler {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
       this.context = ctx;
+      login("asdasd", "sdfdsfsf");
     }
 
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-      System.out.println(msg.getClass().getName());
       onPacket((BasePacket) msg);
     }
   }
