@@ -43,7 +43,7 @@ public class BasePanel extends JPanel {
         add(new PlayerPanel());
 
         user.add(BorderLayout.NORTH, top);
-        user.add(BorderLayout.CENTER,game = new Game(0));
+        user.add(BorderLayout.CENTER,game = new Game());
         user.add(BorderLayout.SOUTH, bottom);
 
         score = new JLabel("score");
@@ -54,7 +54,17 @@ public class BasePanel extends JPanel {
         bottom.add(btn_start);
         bottom.add(btn_exit);
 
-
+        // start 버튼 클릭시 게임 재시작  ( 테스트용 )
+        btn_start.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                game.setFocusable(false);
+                game.timer.cancel();
+                game.timer.purge();
+                game.removeKeyListener(game.keyadapter);
+                game.game();
+            }
+        });
 
 
 

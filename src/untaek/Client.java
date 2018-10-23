@@ -14,15 +14,14 @@ public class Client extends JFrame {
   Client() {
     setTitle("Tetris");
     setSize(FIRST_WIDTH, FIRST_HEIGHT);
-    setResizable(true);
+    setResizable(false);
     add(basePanel = new BasePanel());
-    basePanel.requestFocus();
 
-    add(new StartScreen());
+    //add(new StartScreen());
 
 
     setVisible(true);
-    this.setLocationRelativeTo(null);   // 모니터 가운데 띄우기
+    this.setLocationRelativeTo(null);   // 모니터 가운데 띄우
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);     // 폼 종료시 프로그램 종료
   }
 }

@@ -2,7 +2,6 @@ package untaek;
 
 import untaek.server.DB;
 import untaek.server.Server;
-import untaek.game.MyWindow;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -33,8 +32,6 @@ public class Main {
             case "db":
                 new DB();
                 break;
-            case "g":
-              new MyWindow();
             default: break;
         }
     }

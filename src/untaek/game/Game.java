@@ -7,14 +7,14 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
-import java.util.HashSet;
-import java.util.Iterator;
+import java.util.*;
 import java.util.Timer;
-import java.util.TimerTask;
 
 public class Game extends JPanel{
     static int rows = 25;   // 20 + 1 + 4
     static int columns = 12; // 10 + 2
+    static int rows_savefield = 21;
+    static int columns_savefield = 12;
 
     static int SIZE = 22;
     static int MAX_HEIGHT = SIZE * (rows + 2);
@@ -24,12 +24,12 @@ public class Game extends JPanel{
     static int MARGIN_X = 13 * SIZE;
     static int MARGIN_Y = 5 * SIZE;
 
-    static public int score;
+    public int score;
 
     static int OTHER_MARGIN_X = 25;                 // othter player field's margin X
     static int OTHER_MARGIN_Y = 25;                 // othter player field's margin Y
 
-    Box [][] save_field = new Box[rows][columns];   // field's back up field
+    Box [][] save_field = new Box[rows-4][columns];   // field's back up field
     Box [][] field = new Box[rows][columns];        // main field
     Box [][] field_ = new Box[rows][columns];       // contain block
 
@@ -44,27 +44,67 @@ public class Game extends JPanel{
     public boolean fall_complete;                   // block fall complete flag
     public boolean fall_block_result;               // fall_block() method result value
     public boolean timer_flag = true;               // normal or down(keyboard) fall block flag
-    public boolean gameover_flag = false;           // game over flag
+    public boolean gameover_flag;           // game over flag
     public boolean attack_flag = false;
 
     public int combo=0;
     public int delay = 500;                         // normal block fall delay (0.5s)
-    public int player_number;                       // 0 : me,  1~5 : other player
     public int attack_point;                        // my attack point
 
     public  Timer timer;
     public TimerTask task;
 
+    Queue queue;
+    Thread thread;
     Color gray = new Color(210,209,208);
 
     public static KeyAdapter keyadapter;
 
-    public Game(int player) {
+    public Game() {
         // 초기화
-        player_number = player;
+
+        queue = new LinkedList();
+        queue.add("");
+        queue.remove();
+        queue.poll();
         score = 0;
-        reset_field(field);
-        reset_field(save_field);
+        gameover_flag = false;
+        reset_save_field();
+        reset_field();
+        reset_field_();
+
+        keyadapter = new MyKeyAdapter();
+        this.addKeyListener(keyadapter);
+        this.setFocusable(true);
+
+        block = new Block();
+        block_pre_1 = new Block();
+        block_pre_2 = new Block();
+        block_pre_3 = new Block();
+        block_pre_4 = new Block();
+
+        fill_field_();
+        fill_field();
+
+        task = new TimerTask(){
+            @Override
+            public void run(){
+                // object 떨어짐
+                fall_block();
+            }
+        };
+        timer = new Timer();
+        timer.schedule(task,0,delay);
+
+        thread = new Thread(runnable);
+        thread.start();
+    }
+    public void game() {
+        // 초기화
+        score = 0;
+        gameover_flag = false;
+        reset_save_field();
+        reset_field();
         reset_field_();
 
         keyadapter = new MyKeyAdapter();
@@ -99,16 +139,11 @@ public class Game extends JPanel{
         if(gameover_flag){
             gameover_effect();
         }
-        if (player_number == 0){
             // my game
             draw_Preview(g);
             draw_Field(g);
             draw_Field_Border(g);
-        }else{
-            // others game
-            draw_others_Field(g);
-            draw_others_Field_Border(g);
-        }
+
         if(attack_flag){
             //send attack_point to server
         }
@@ -154,7 +189,7 @@ public class Game extends JPanel{
     public void draw_Field(Graphics g){
         // 눈금
         for(int x = 1; x < columns-1; x++){     // 0~ 11
-            for (int y = 4; y < rows-1; y++) {   // 4~ 24
+            for (int y = 0; y < rows-1; y++) {   // 4~ 24
                 g.setColor(gray);
                 g.drawRect(SIZE * x, SIZE/2 + SIZE * (y-4), SIZE,SIZE);
             }
@@ -412,7 +447,20 @@ public class Game extends JPanel{
     }
 
     // field = 0
-    public void reset_field(Box[][] field){
+    public void reset_save_field(){
+        for (int y = 0; y < rows_savefield; y++) {
+            for(int x = 0; x<columns_savefield; x++) { // 0 ~ 11
+                if (y == rows_savefield - 1 || x == 0 || x == columns_savefield - 1) {
+                    save_field[y][x] = new Box(1, -1);
+                } else {
+                    save_field[y][x] = new Box(0, 0);
+                }
+            }
+        }
+    }
+
+    // field = 0
+    public void reset_field(){
         for (int y = 0; y < rows; y++) {
             for(int x = 0; x<columns; x++) { // 0 ~ 11
                 if (y == rows - 1 || x == 0 || x == columns - 1) {
@@ -436,20 +484,27 @@ public class Game extends JPanel{
     // field = save_field
     public void load_field(){
         for(int y = 0; y<rows; y++){
-            for(int x = 0; x<columns; x++){
-                field[y][x].num = save_field[y][x].num;
-                field[y][x].color = save_field[y][x].color;
-
+            if(y<4){
+                for(int x = 0; x<columns; x++) {
+                    field[y][x].num = 0;
+                    field[y][x].color= 0;
+                }
+            }else{
+                for(int x = 0; x<columns; x++){
+                    field[y][x].num = save_field[y-4][x].num;
+                    field[y][x].color = save_field[y-4][x].color;
+                }
             }
+
         }
     }
 
     // save_field = field     (Back Up)
     public void save_field(){
-        for(int i = 0; i<rows; i++){
-            for (int j = 0; j<columns; j++){
-                save_field[i][j].num = field[i][j].num;
-                save_field[i][j].color = field[i][j].color;
+        for(int i = 0; i<rows_savefield; i++){
+            for (int j = 0; j<columns_savefield; j++){
+                save_field[i][j].num = field[i+4][j].num;
+                save_field[i][j].color = field[i+4][j].color;
             }
         }
     }
@@ -500,6 +555,11 @@ public class Game extends JPanel{
                     block.row= block.row - 1;
                     fill_field_();          //  field_ = 0 + block
                     fill_field();           // field = field + field_
+
+                    explode_block();
+                    save_field();
+
+                    block_pre_change();
                     if (confirm_gameover()) {
                         System.out.println("*****************GAME OVER *****************");
                         this.removeKeyListener(keyadapter);
@@ -507,12 +567,7 @@ public class Game extends JPanel{
                         timer.purge();
                         return;
                     } else {
-                    block_pre_change();
                     }
-
-                    explode_block();
-                    save_field();
-
                     return;
                 case 1:             // left
                     block.column = block.column + 1;
@@ -600,71 +655,170 @@ public class Game extends JPanel{
         block_pre_4 = new Block();
     }
 
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                System.out.println("스ㅔㄹ드 시작");
+                while (true) {
+                    if(gameover_flag){
+                        Thread.sleep(1000);
+                        thread.interrupt();
+                    }
+                    if (!queue.isEmpty()) {
+                        System.out.println("not empty");
+                        switch ((int) queue.peek()) {
+                            case 37:    // left
+                                block_event(1);
+                                break;
+                            case 39:    //right
+                                block_event(2);
+                                break;
+                            case 38:    // up
+                                block_event(3);
+                                break;
+                            case 40:    // down
+                                if (timer_flag) {
+                                    timer.cancel();
+                                    timer.purge();
+                                    timer_flag = false;
+
+                                    timer = new Timer();
+                                    task = new TimerTask() {
+                                        @Override
+                                        public void run() {
+                                            // object 떨어짐
+                                            fall_block();
+                                        }
+                                    };
+                                    timer.schedule(task, 0, delay / 4);
+                                }
+                                break;
+                            case -40:   // down release
+                                System.out.println("down release");
+                                timer.cancel();
+                                timer.purge();
+                                timer_flag = true;
+
+                                task = new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        // object 떨어짐
+                                        fall_block();
+                                    }
+                                };
+                                timer = new Timer();
+                                timer.schedule(task, 0, delay);
+                                break;
+                            case 32:
+                                while (fall_block()) {
+                                }
+                                break;
+                        }
+
+                        queue.remove();
+                        queue.poll();
+                        System.out.println("큐 사용");
+//                        try {
+//                            Thread.sleep(Long.valueOf(50));
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
+                    }
+
+                    Thread.sleep(50);
+                }
+            }catch (InterruptedException e){
+                e.printStackTrace();
+            }finally {
+                System.out.println("thread dead");
+            }
+        }
+    };
+
     public class MyKeyAdapter extends KeyAdapter {
         @Override
         public void keyReleased(KeyEvent e){
             super.keyReleased(e);
-            int key = e.getKeyCode();
-            if(key == KeyEvent.VK_DOWN){
-                timer.cancel();
-                timer.purge();
-                timer_flag = true;
+            int key = e.getKeyCode() * (-1);
+            System.out.println(key);
+            queue.add(key);
 
-                task = new TimerTask(){
-                    @Override
-                    public void run(){
-                        // object 떨어짐
-                        fall_block();
-                    }
-                };
-                timer = new Timer();
-                timer.schedule(task, 0, delay);
-            }
         }
-
 
         @Override
         public void keyPressed(KeyEvent e) {
-
             super.keyPressed(e);
             int key = e.getKeyCode();
-            switch (key){
-                case KeyEvent.VK_LEFT:
-                    block_event(1);
-                    break;
-                case KeyEvent.VK_RIGHT:
-                    block_event(2);
-                    break;
-                case  KeyEvent.VK_UP:
-                    block_event(3);
-                    break;
-                case KeyEvent.VK_DOWN:
-                    if(timer_flag){
-                        timer.cancel();
-                        timer.purge();
-                        timer_flag = false;
-
-                        timer = new Timer();
-                        task = new TimerTask(){
-                            @Override
-                            public void run(){
-                                // object 떨어짐
-                                fall_block();
-                            }
-                        };
-                        timer.schedule(task,0,delay /4);
-                    }
-
-                    break;
-
-                case KeyEvent.VK_SPACE:
-                    while (fall_block()){
-                    }
-
-                    break;
-            }
+            System.out.println(key);
+            queue.add(key);
         }
 
     }
 
+//    public class MyKeyAdapter extends KeyAdapter {
+//        @Override
+//        public void keyReleased(KeyEvent e) {
+//            super.keyReleased(e);
+//            int key = e.getKeyCode();
+//            if (key == KeyEvent.VK_DOWN) {
+//                timer.cancel();
+//                timer.purge();
+//                timer_flag = true;
+//
+//                task = new TimerTask() {
+//                    @Override
+//                    public void run() {
+//                        // object 떨어짐
+//                        fall_block();
+//                    }
+//                };
+//                timer = new Timer();
+//                timer.schedule(task, 0, delay);
+//            }
+//        }
+//
+//
+//        @Override
+//        public void keyPressed(KeyEvent e) {
+//
+//            super.keyPressed(e);
+//            int key = e.getKeyCode();
+//            switch (key) {
+//                case KeyEvent.VK_LEFT:
+//                    block_event(1);
+//                    break;
+//                case KeyEvent.VK_RIGHT:
+//                    block_event(2);
+//                    break;
+//                case KeyEvent.VK_UP:
+//                    block_event(3);
+//                    break;
+//                case KeyEvent.VK_DOWN:
+//                    if (timer_flag) {
+//                        timer.cancel();
+//                        timer.purge();
+//                        timer_flag = false;
+//
+//                        timer = new Timer();
+//                        task = new TimerTask() {
+//                            @Override
+//                            public void run() {
+//                                // object 떨어짐
+//                                fall_block();
+//                            }
+//                        };
+//                        timer.schedule(task, 0, delay / 4);
+//                    }
+//
+//                    break;
+//
+//                case KeyEvent.VK_SPACE:
+//                    while (fall_block()) {
+//                    }
+//
+//                    break;
+//            }
+//        }
+//    }
 }
