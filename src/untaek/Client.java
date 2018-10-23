@@ -16,8 +16,9 @@ public class Client extends JFrame {
     setSize(FIRST_WIDTH, FIRST_HEIGHT);
     setResizable(true);
     add(basePanel = new BasePanel());
-
     basePanel.requestFocus();
+
+    add(new StartScreen());
 
 
     setVisible(true);
