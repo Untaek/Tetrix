@@ -10,9 +10,9 @@ public class BasePacket implements Serializable {
   protected int id;
   protected int gameId;
 
-  public BasePacket(String type, String networkId) {
+  public BasePacket(String type, int id) {
     this.type = type;
-    this.networkId = networkId;
+    this.id = id;
   }
 
   public String getType() {

@@ -23,8 +23,7 @@ public class Main {
                 socket.getOutputStream().write(10);
                 break;
             case "t2":
-                ClientHandler handler = new ClientHandler(channel -> {});
-                handler.login("asaadsf", "324f24");
+
                 break;
             case "t3":
                 Server server = new Server();

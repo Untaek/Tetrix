@@ -13,5 +13,7 @@ public class Client extends JFrame {
     setResizable(true);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     add(new BasePanel());
+
+    ClientHandler.getInstance();
   }
 }

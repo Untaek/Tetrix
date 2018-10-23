@@ -9,6 +9,7 @@ import io.netty.handler.codec.serialization.ClassResolvers;
 import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import untaek.server.BasePacket;
+import untaek.server.Packet.*;
 import untaek.server.PacketManager;
 
 public class ClientHandler {
@@ -16,17 +17,20 @@ public class ClientHandler {
   private static final String HOST = "localhost";
   private static final int PORT = 8765;
   private static Handler h;
-  private Callback callback;
 
-  interface Callback {
-    void onConnected(Channel channel);
-    void onPacket(BasePacket packet);
-    void onResult(Object object);
+  private Thread packetReceiverThread;
+
+  private ClientHandler(){
+    this.init();
   }
 
-  ClientHandler(Callback callback){
-    this.callback = callback;
-    this.init();
+  static private ClientHandler instance;
+
+  static public ClientHandler getInstance() {
+    if (instance == null) {
+      instance = new ClientHandler();
+    }
+    return instance;
   }
 
   private Handler getHandler() {
@@ -55,15 +59,17 @@ public class ClientHandler {
             );
           }
         });
-    try {
+    packetReceiverThread = new Thread(() -> {
       ChannelFuture f = bootstrap.connect(HOST, PORT);
 
-      callback.onConnected(f.channel());
+      try {
+        f.channel().closeFuture().sync();
+      } catch (InterruptedException e) {
+        e.printStackTrace();
+      }
+    });
 
-      f.channel().closeFuture().sync();
-    } catch (InterruptedException e) {
-      e.printStackTrace();
-    }
+    packetReceiverThread.start();
   }
 
   /**
@@ -78,72 +84,105 @@ public class ClientHandler {
     getHandler().context.writeAndFlush(PacketManager.getInstance().login(name, password));
   }
 
-  void pop(int amount) {
-    getHandler().context.channel().write(PacketManager.getInstance().pop(amount));
+  void pop(int id, int amount) {
+    getHandler().context.writeAndFlush(PacketManager.getInstance().pop(id, amount));
   }
 
-  void start() {
-    getHandler().context.channel().write(PacketManager.getInstance().startGame());
+  void start(int id, int gameId) {
+    getHandler().context.writeAndFlush(PacketManager.getInstance().startGame(id, gameId));
   }
 
-  void snapshot(final int field[][], final int color[][]) {
-    getHandler().context.channel().write(PacketManager.getInstance().snapshot(field, color));
+  void snapshot(int id, final int field[][], final int color[][]) {
+    getHandler().context.writeAndFlush(PacketManager.getInstance().snapshot(id, field, color));
   }
 
-  void chat(String text) {
-    getHandler().context.channel().write(PacketManager.getInstance().chat(text));
-
+  void chat(int id, String text) {
+    getHandler().context.writeAndFlush(PacketManager.getInstance().chat(id, text));
   }
+
   /**
-   *
-   * 클라이언트 기능을 넣으시오
-   *
+   * 받은 패킷을 처리하고자 한다면
+   * 아래의 리스너를 사용하시오
    */
-  void onPacket(BasePacket packet) {
+
+  private interface OnLoginResultListener{ void on(LoginResult packet); }
+  private OnLoginResultListener onLoginResultListener;
+  public ClientHandler addOnLoginResultListener(OnLoginResultListener listener) { this.onLoginResultListener = listener; return this; }
+
+  private interface OnJoinListener{ void on(Join packet); }
+  private OnJoinListener onJoinListener;
+  public ClientHandler addOnJoinListener(OnJoinListener listener) { this.onJoinListener = listener; return this; }
+
+  private interface OnLeaveListener{ void on(Leave packet); }
+  private OnLeaveListener onLeaveListener;
+  public ClientHandler addOnLeaveListener(OnLeaveListener listener) { this.onLeaveListener = listener; return this; }
+
+  private interface OnAttackListener{ void on(Attack packet); }
+  private OnAttackListener onAttackListener;
+  public ClientHandler addOnAttackListener(OnAttackListener listener) { this.onAttackListener = listener; return this; }
+
+  private interface OnLoseListener{ void on(Lose packet); }
+  private OnLoseListener onLoseListener;
+  public ClientHandler addOnLoseListener(OnLoseListener listener) { this.onLoseListener = listener; return this; }
+
+  private interface OnFinishListener{ void on(FinishGame packet); }
+  private OnFinishListener onFinishListener;
+  public ClientHandler addOnFinishListener(OnFinishListener listener) { this.onFinishListener = listener; return this; }
+
+  private interface OnStartListener{ void on(StartGame packet); }
+  private OnStartListener onStartListener;
+  public ClientHandler addOnStartListener(OnStartListener listener) { this.onStartListener = listener; return this; }
+
+  private interface OnChatListener{ void on(Chat packet); }
+  private OnChatListener onChatListener;
+  public ClientHandler addOnChatListener(OnChatListener listener) { this.onChatListener = listener; return this; }
+
+  private interface OnSnapshotListener{ void on(Snapshot packet); }
+  private OnSnapshotListener onSnapshotListener;
+  public ClientHandler addOnSnapshotListener(OnSnapshotListener listener) { this.onSnapshotListener = listener; return this; }
+
+  private void onPacket(BasePacket packet) {
     System.out.println(packet.toString());
 
     /*
-     * 입맛대로 바꾸시오
+     * 패킷 처리
      */
-    Object result = new Object();
 
     switch (packet.getType()) {
       // 로그인
-      case "login_result": break;
+      case "login_result": onLoginResultListener.on((LoginResult) packet); break;
 
       // 다른 사람 접속
-      case "join": break;
+      case "join": onJoinListener.on((Join) packet); break;
 
       // 누가 나갔을 때
-      case "leave": break;
+      case "leave": onLeaveListener.on((Leave) packet); break;
 
       // 공격 받았을 때
-      case "attack": break;
+      case "attack": onAttackListener.on((Attack) packet); break;
 
       // 누군가 죽었을 때
-      case "lose": break;
+      case "lose": onLoseListener.on((Lose) packet); break;
 
       // 게임이 끝났을 때
-      case "finish": break;
+      case "finish": onFinishListener.on((FinishGame) packet); break;
 
       // 게임이 시작할 때
-      case "start": break;
+      case "start": onStartListener.on((StartGame) packet); break;
 
       // 채팅을 할 때
-      case "chat": break;
+      case "chat": onChatListener.on((Chat) packet); break;
+
+      // 다른 유저의 스냅샷 받음
+      case "snapshot": onSnapshotListener.on((Snapshot) packet); break;
         default:
           System.out.println("[Unknown Packet in onPacket, ClientHandler class]" + packet.toString());
     }
-
-    /*
-      처리 된 패킷은 콜백으로 넘기시오
-     */
-    this.callback.onResult(result);
   }
 
   class Handler extends ChannelInboundHandlerAdapter {
 
-    public ChannelHandlerContext context;
+    private ChannelHandlerContext context;
 
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
