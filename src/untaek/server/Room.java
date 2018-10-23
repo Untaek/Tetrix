@@ -28,6 +28,12 @@ public class Room {
     return users;
   }
 
+  public ArrayList<UserStatus> getUsersStatus() {
+    ArrayList<UserStatus> l = new ArrayList<>();
+    this.users.forEach(u -> l.add(u.getUserStatus()));
+    return l;
+  }
+
   public ArrayList<Integer> getLosers() {
     return losers;
   }

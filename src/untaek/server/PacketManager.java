@@ -1,6 +1,11 @@
 package untaek.server;
 
+import com.google.gson.Gson;
 import untaek.ClientHandler;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PacketManager {
 
@@ -53,8 +58,8 @@ public class PacketManager {
     return new Chat(text);
   }
 
-  public Users users(UserStatus ids[]) {
-    return new Users(ids);
+  public Users users(UserStatus users[]) {
+    return new Users(users);
   }
 
   public Fail fail(String reason) {
@@ -70,7 +75,7 @@ class UserStatus extends BasePacket {
   private String name;
   private int wins;
   private int loses;
-  private int type;
+  private int status;
 
   public UserStatus(String name, int wins, int loses){
     super("user_status", PacketManager.getInstance().currentNetworkId());

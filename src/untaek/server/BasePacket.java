@@ -2,7 +2,9 @@ package untaek.server;
 
 import com.google.gson.Gson;
 
-public class BasePacket {
+import java.io.Serializable;
+
+public class BasePacket implements Serializable {
   private String type;
   private String networkId;
   protected int id;
