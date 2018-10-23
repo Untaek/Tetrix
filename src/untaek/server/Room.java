@@ -1,6 +1,7 @@
 package untaek.server;
 
 import java.util.ArrayList;
+import untaek.server.Packet.*;
 
 public class Room {
   public static final int WAITING = 817;
@@ -10,10 +11,12 @@ public class Room {
   private ArrayList<User> users;
   private ArrayList<Integer> losers;
   private int status = WAITING;
+  private int id;
 
-  public Room(){
+  public Room(int id){
     this.users = new ArrayList<>();
     this.losers = new ArrayList<>();
+    this.id = id;
   }
 
   public void setStatus(int status) {
@@ -22,6 +25,10 @@ public class Room {
 
   public int getStatus() {
     return status;
+  }
+
+  public int getId() {
+    return id;
   }
 
   public ArrayList<User> getUsers() {

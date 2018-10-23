@@ -13,8 +13,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 import java.util.Hashtable;
+import untaek.server.Packet.*;
 
 public class Server {
 
@@ -175,16 +175,15 @@ public class Server {
           .orElse(null);
 
       if(room == null) {
-        room = new Room();
+        room = new Room((int)(Math.random() * 100000));
         room.getUsers().add(user);
-        this.rooms.put((int)(Math.random() * 100000), room);
+        this.rooms.put(room.getId(), room);
       }
 
       write(
           PacketManager.getInstance()
-              .users(room.getUsersStatus().toArray(new UserStatus[0])),
-          user.getChannel()
-      );
+              .loginResult(user.getUserStatus(), room.getUsersStatus().toArray(new UserStatus[0]), LoginResult.SUCCESS, room.getId()),
+          user.getChannel());
 
       broadcast(
           PacketManager.getInstance()
@@ -198,7 +197,7 @@ public class Server {
       e.printStackTrace();
     }
 
-    ch.write(PacketManager.getInstance().fail("login failed"));
+    write(PacketManager.getInstance().fail("login failed"), ch);
     System.out.println(String.format("Login failed name: %s, password: %s", name, password));
     return 0;
   }
@@ -238,7 +237,7 @@ public class Server {
       }
 
       if(amount > 0 && p.id != u.getId()) {
-        u.getChannel().write(PacketManager.getInstance().attack(amount));
+        u.getChannel().write(PacketManager.getInstance().attack(p.id, amount));
       }
     });
 

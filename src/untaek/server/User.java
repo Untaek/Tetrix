@@ -1,9 +1,7 @@
 package untaek.server;
 
-import com.google.gson.Gson;
 import io.netty.channel.Channel;
 
-import java.net.Socket;
 
 public class User {
   private String name;
@@ -32,8 +30,8 @@ public class User {
     return id;
   }
 
-  public UserStatus getUserStatus() {
-    return PacketManager.getInstance().userStatus(name, wins, loses);
+  public Packet.UserStatus getUserStatus() {
+    return PacketManager.getInstance().userStatus(id, name, wins, loses);
   }
 
   public Channel getChannel() {
