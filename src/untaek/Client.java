@@ -5,13 +5,11 @@ import javax.swing.*;
 public class Client extends JFrame {
   static int WIDTH = 1000;
   static int HEIGHT = 750;
-  BasePanel basePanel;
 
   Client() {
     setTitle("Tetris");
     setSize(WIDTH, HEIGHT);
     setResizable(false);
-    //add(basePanel = new BasePanel());
 
     add(new StartScreen());
     setVisible(true);

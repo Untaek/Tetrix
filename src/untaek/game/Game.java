@@ -1,7 +1,6 @@
 package untaek.game;
 
 import untaek.BasePanel;
-import untaek.server.PacketManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,16 +10,16 @@ import java.util.*;
 import java.util.Timer;
 
 public class Game extends JPanel {
-    static int rows = 25;   // 20 + 1 + 4
-    static int columns = 12; // 10 + 2
-    static int rows_savefield = 21;
-    static int columns_savefield = 12;
+    Random rand;
 
-    static int SIZE = 22;
-    static final int MAX_HEIGHT = SIZE * (rows + 2);
-    static final int MAX_WIDTH = SIZE * (columns + 1);
-    static final int HEIGHT = SIZE * (rows - 5);
-    static final int WIDTH = SIZE * (columns - 2);
+    static final int ROWS = 25;   // 20 + 1 + 4
+    static final int COLUMNS = 12; // 10 + 2
+
+    static final int SIZE = 22;
+    static final int MAX_HEIGHT = SIZE * (ROWS + 2);
+    static final int MAX_WIDTH = SIZE * (COLUMNS + 1);
+    static final int HEIGHT = SIZE * (ROWS - 5);
+    static final int WIDTH = SIZE * (COLUMNS - 2);
     static final int MARGIN_X = 13 * SIZE;
     static final int MARGIN_Y = 5 * SIZE;
 
@@ -29,9 +28,9 @@ public class Game extends JPanel {
     static int OTHER_MARGIN_X = 25;                 // othter player field's margin X
     static int OTHER_MARGIN_Y = 25;                 // othter player field's margin Y
 
-    Box[][] save_field = new Box[rows][columns];   // field's back up field
-    Box[][] field = new Box[rows][columns];        // main field
-    Box[][] field_ = new Box[rows][columns];       // contain block
+    Box[][] save_field = new Box[ROWS][COLUMNS];   // field's back up field
+    Box[][] field = new Box[ROWS][COLUMNS];        // main field
+    Box[][] field_ = new Box[ROWS][COLUMNS];       // contain block
 
     int[][] sendNum = new int[20][10];
     int[][] sendColor = new int[20][10];
@@ -63,9 +62,9 @@ public class Game extends JPanel {
 
     public static KeyAdapter keyadapter;
 
-
     public void game() {
         // 초기화
+        rand = new Random();
         Arrays.fill(Block.bag,false);
         queue = new LinkedList<>();
         score = 0;
@@ -135,39 +134,63 @@ public class Game extends JPanel {
         }
     }
 
+    public void beAttacked(int beAttackedPoint){
+        int blank;
+        for(int x=1; x< COLUMNS -1; x++){
+            for(int y = 4; y<ROWS-1; y++){
+                field[y-beAttackedPoint][x].num = field[y][x].num;
+                field[y-beAttackedPoint][x].color = field[y][x].color;
+            }
+        }
+
+        for(int y = ROWS-2; y>ROWS-2-beAttackedPoint; y--){
+            blank = rand.nextInt(10)+1;
+            for(int x = 1; x<COLUMNS-1; x++) {
+                if(x != blank) {
+                    field[y][x].num = 1;
+                    field[y][x].color = -2;
+                }else{
+                    field[y][x].num = 0;
+                    field[y][x].color = 0;
+                }
+            }
+
+        }
+    }
+
     // draw my Field's Border
     public void drawFieldBorder(Graphics g) {
         g.setColor(Color.BLACK);
 
         // top border
-        g.fillRect(SIZE / 2, 0, (columns - 1) * SIZE, SIZE / 2);
-        g.drawRect(SIZE / 2, 0, (columns - 1) * SIZE, SIZE / 2);
+        g.fillRect(SIZE / 2, 0, (COLUMNS - 1) * SIZE, SIZE / 2);
+        g.drawRect(SIZE / 2, 0, (COLUMNS - 1) * SIZE, SIZE / 2);
 
         // bottom border
-        g.fillRect(SIZE / 2, SIZE * (rows - 4) - SIZE / 2, (columns - 1) * SIZE, SIZE / 2);
-        g.drawRect(SIZE / 2, SIZE * (rows - 4) - SIZE / 2, (columns - 1) * SIZE, SIZE / 2);
+        g.fillRect(SIZE / 2, SIZE * (ROWS - 4) - SIZE / 2, (COLUMNS - 1) * SIZE, SIZE / 2);
+        g.drawRect(SIZE / 2, SIZE * (ROWS - 4) - SIZE / 2, (COLUMNS - 1) * SIZE, SIZE / 2);
 
         // left border
-        g.fillRect(SIZE / 2, 0, SIZE / 2, (rows - 4) * SIZE);
-        g.drawRect(SIZE / 2, 0, SIZE / 2, (rows - 4) * SIZE);
+        g.fillRect(SIZE / 2, 0, SIZE / 2, (ROWS - 4) * SIZE);
+        g.drawRect(SIZE / 2, 0, SIZE / 2, (ROWS - 4) * SIZE);
 
         // right border
-        g.fillRect((columns - 1) * SIZE, 0, SIZE / 2, (rows - 4) * SIZE);
-        g.drawRect((columns - 1) * SIZE, 0, SIZE / 2, (rows - 4) * SIZE);
+        g.fillRect((COLUMNS - 1) * SIZE, 0, SIZE / 2, (ROWS - 4) * SIZE);
+        g.drawRect((COLUMNS - 1) * SIZE, 0, SIZE / 2, (ROWS - 4) * SIZE);
     }
 
     // draw my Field
     public void drawField(Graphics g) {
         // 눈금
-        for (int x = 1; x < columns - 1; x++) {     // 0~ 11
-            for (int y = 0; y < rows - 1; y++) {   // 4~ 24
+        for (int x = 1; x < COLUMNS - 1; x++) {     // 0~ 11
+            for (int y = 4; y < ROWS - 1; y++) {   // 4~ 24
                 g.setColor(gray);
                 g.drawRect(SIZE * x, SIZE / 2 + SIZE * (y - 4), SIZE, SIZE);
             }
         }
 
-        for (int x = 1; x < columns - 1; x++) {     // 0~ 11
-            for (int y = 4; y < rows - 1; y++) {   // 4~ 24
+        for (int x = 1; x < COLUMNS - 1; x++) {     // 0~ 11
+            for (int y = 4; y < ROWS - 1; y++) {   // 4~ 24
                 if (field[y][x].num == 1) {
                     switch (field[y][x].color) {
                         case -2:    // Gray
@@ -280,8 +303,8 @@ public class Game extends JPanel {
 
     // check to possible or Impossible
     public boolean confirmField() {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
                 if (field[i][j].num == 2)
                     return false;
             }
@@ -297,9 +320,9 @@ public class Game extends JPanel {
 
     // print my Field (Console)
     public void print_field(Box[][] field) {
-        for (int i = 0; i < rows - 1; i++) {
+        for (int i = 0; i < ROWS - 1; i++) {
             System.out.print("□");
-            for (int j = 1; j < columns - 1; j++) {
+            for (int j = 1; j < COLUMNS - 1; j++) {
                 if (field[i][j].num == 1) {
                     System.out.print(" ■");
                 } else {
@@ -308,7 +331,7 @@ public class Game extends JPanel {
             }
             System.out.println(" □");
         }
-        for (int j = 0; j < columns; j++) {
+        for (int j = 0; j < COLUMNS; j++) {
             System.out.print("□ ");
         }
         System.out.println("");
@@ -318,8 +341,8 @@ public class Game extends JPanel {
 
     // field  = field + field_
     public void fillField() {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
                 field[i][j].num = field[i][j].num + field_[i][j].num;
                 field[i][j].color = field[i][j].color + field_[i][j].color;
             }
@@ -331,7 +354,7 @@ public class Game extends JPanel {
         resetField_();
         for (int y = 0; y < block.area_length; y++) {
             for (int x = 0; x < block.area_length; x++) {
-                if (y + block.row >= rows || x + block.column <= -1 || x + block.column >= columns) {
+                if (y + block.row >= ROWS || x + block.column <= -1 || x + block.column >= COLUMNS) {
                 } else {
                     field_[y + block.row][x + block.column].num = block.area[y][x].num;
                     field_[y + block.row][x + block.column].color = block.area[y][x].color;
@@ -342,9 +365,9 @@ public class Game extends JPanel {
 
     // field = 0
     public void resetField(Box[][] field) {
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < columns; x++) { // 0 ~ 11
-                if (y == rows - 1 || x == 0 || x == columns - 1) {
+        for (int y = 0; y < ROWS; y++) {
+            for (int x = 0; x < COLUMNS; x++) { // 0 ~ 11
+                if (y == ROWS - 1 || x == 0 || x == COLUMNS - 1) {
                     field[y][x] = new Box(1, -1);
                 } else {
                     field[y][x] = new Box(0, 0);
@@ -355,8 +378,8 @@ public class Game extends JPanel {
 
     // field_ = 0
     public void resetField_() {
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < columns; x++) {
+        for (int y = 0; y < ROWS; y++) {
+            for (int x = 0; x < COLUMNS; x++) {
                 field_[y][x] = new Box(0, 0);
             }
         }
@@ -364,8 +387,8 @@ public class Game extends JPanel {
 
     // field = saveField
     public void loadField() {
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < columns; x++) {
+        for (int y = 0; y < ROWS; y++) {
+            for (int x = 0; x < COLUMNS; x++) {
                 field[y][x].num = save_field[y][x].num;
                 field[y][x].color = save_field[y][x].color;
             }
@@ -374,8 +397,8 @@ public class Game extends JPanel {
 
     // saveField = field     (Back Up)
     public void saveField() {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
                 save_field[i][j].num = field[i][j].num;
                 save_field[i][j].color = field[i][j].color;
             }
@@ -384,8 +407,8 @@ public class Game extends JPanel {
 
     // field = field - field_    (back up fillField())
     public void returnField() {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < columns; j++) {
+        for (int i = 0; i < ROWS; i++) {
+            for (int j = 0; j < COLUMNS; j++) {
                 field[i][j].num = field[i][j].num - field_[i][j].num;
                 field[i][j].color = field[i][j].color - field_[i][j].color;
             }
@@ -430,6 +453,9 @@ public class Game extends JPanel {
                     fillField();           // field = field + field_
 
                     explodeBlock();
+//                    if(exploded_block>0) {
+//                        beAttacked(exploded_block);
+//                    }
                     saveField();
 
                     blockPreChange();
@@ -467,15 +493,15 @@ public class Game extends JPanel {
     public void explodeBlock() {
         int total;
         exploded_block = 0;
-        for (int a = rows - 2; a > 3; a--) {
+        for (int a = ROWS - 2; a > 3; a--) {
             total = 0;
-            for (int b = 1; b < columns - 1; b++) {
+            for (int b = 1; b < COLUMNS - 1; b++) {
                 total = total + field[a][b].num;
             }
             if (total == 10) {
                 //explode
                 for (int i = a; i > 3; i--) {
-                    for (int j = 1; j < columns - 1; j++) {
+                    for (int j = 1; j < COLUMNS - 1; j++) {
                         field[i][j].num = field[i - 1][j].num;
                         field[i][j].color = field[i - 1][j].color;
                     }
@@ -497,7 +523,7 @@ public class Game extends JPanel {
     // confirm game over
     public boolean confirmGameOver() {
         for (int y = 0; y < 4; y++) {
-            for (int x = 1; x < columns - 1; x++) {
+            for (int x = 1; x < COLUMNS - 1; x++) {
                 if (field[y][x].num == 1) {
                     gameover_flag = true;
                     return true;
@@ -509,8 +535,8 @@ public class Game extends JPanel {
 
     // game over effect ( every block change color  >> gray )
     public void gameOverEffect() {
-        for (int y = 4; y < rows - 1; y++) {
-            for (int x = 1; x < columns - 1; x++) {
+        for (int y = 4; y < ROWS - 1; y++) {
+            for (int x = 1; x < COLUMNS - 1; x++) {
                 if (field[y][x].num == 1) {
                     field[y][x].color = -2;
                 }

@@ -79,7 +79,6 @@ public class BasePanel extends JPanel {
         btn_start.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                game.setFocusable(false);
                 game.timer.cancel();
                 game.timer.purge();
                 game.removeKeyListener(game.keyadapter);
