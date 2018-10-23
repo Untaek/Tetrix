@@ -182,9 +182,8 @@ public class Server {
 
       write(
           PacketManager.getInstance()
-              .users(room.getUsersStatus().toArray(new UserStatus[0])),
-          user.getChannel()
-      );
+              .loginResult(room.getUsersStatus().toArray(new UserStatus[0]), LoginResult.SUCCESS),
+          user.getChannel());
 
       broadcast(
           PacketManager.getInstance()
@@ -198,7 +197,7 @@ public class Server {
       e.printStackTrace();
     }
 
-    ch.write(PacketManager.getInstance().fail("login failed"));
+    write(PacketManager.getInstance().fail("login failed"), ch);
     System.out.println(String.format("Login failed name: %s, password: %s", name, password));
     return 0;
   }

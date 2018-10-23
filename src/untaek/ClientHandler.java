@@ -20,6 +20,8 @@ public class ClientHandler {
 
   interface Callback {
     void onConnected(Channel channel);
+    void onPacket(BasePacket packet);
+    void onResult(Object object);
   }
 
   ClientHandler(Callback callback){
@@ -100,9 +102,14 @@ public class ClientHandler {
   void onPacket(BasePacket packet) {
     System.out.println(packet.toString());
 
+    /*
+     * 입맛대로 바꾸시오
+     */
+    Object result = new Object();
+
     switch (packet.getType()) {
       // 로그인
-      case "login": break;
+      case "login_result": break;
 
       // 다른 사람 접속
       case "join": break;
@@ -127,6 +134,11 @@ public class ClientHandler {
         default:
           System.out.println("[Unknown Packet in onPacket, ClientHandler class]" + packet.toString());
     }
+
+    /*
+      처리 된 패킷은 콜백으로 넘기시오
+     */
+    this.callback.onResult(result);
   }
 
   class Handler extends ChannelInboundHandlerAdapter {
@@ -136,7 +148,6 @@ public class ClientHandler {
     @Override
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
       this.context = ctx;
-      login("asdasd", "sdfdsfsf");
     }
 
     @Override

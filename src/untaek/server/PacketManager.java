@@ -68,6 +68,10 @@ public class PacketManager {
   public Join join(UserStatus user) {
     return new Join(user);
   }
+
+  public LoginResult loginResult(UserStatus users[], int status){
+    return new LoginResult(users, status);
+  }
 }
 
 class UserStatus extends BasePacket {
@@ -173,5 +177,20 @@ class Fail extends BasePacket {
 
   public String getReason() {
     return reason;
+  }
+}
+
+class LoginResult extends BasePacket {
+  public static final int SUCCESS = 1;
+  public static final int FAILED = 2;
+
+  private UserStatus me[];
+  private UserStatus users[];
+  private int status;
+
+  public LoginResult(UserStatus users[], int status) {
+    super("login_result", PacketManager.getInstance().currentNetworkId());
+    this.users = users;
+    this.status = status;
   }
 }
