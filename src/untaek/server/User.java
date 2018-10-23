@@ -1,88 +1,41 @@
 package untaek.server;
 
-import java.io.*;
+import io.netty.channel.Channel;
+
 import java.net.Socket;
-import java.rmi.UnexpectedException;
 
 public class User {
-
-  User(Socket socket) throws UnexpectedException {
-    if(socket == null) throw new UnexpectedException("Socket is closed");
-
-    try {
-      os = socket.getOutputStream();
-      oos = new ObjectOutputStream(os);
-
-      is = socket.getInputStream();
-      ois = new ObjectInputStream(is);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-  }
-
-  private Socket socket;
   private String name;
-  private String id;
+  private int id;
+  private Channel channel;
+  private String networkId;
+  private int wins, loses;
 
-  private OutputStream os;
-  private ObjectOutputStream oos;
-
-  private InputStream is;
-  private ObjectInputStream ois;
-
-  public Socket getSocket() {
-    return socket;
-  }
-
-  public void setSocket(Socket socket) {
-    this.socket = socket;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
+  public User(String name, int id, Channel channel, String networkId) {
     this.name = name;
+    this.id = id;
+    this.channel = channel;
+    this.networkId = networkId;
   }
 
-  public String getId() {
+  public User(String name, int id, Channel channel, String networkId, int wins, int loses) {
+    this.name = name;
+    this.id = id;
+    this.channel = channel;
+    this.networkId = networkId;
+    this.wins = wins;
+    this.loses = loses;
+  }
+
+  public int getId() {
     return id;
   }
 
-  public void setId(String id) {
-    this.id = id;
+  public UserStatus getUserStatus() {
+    return PacketManager.getInstance().userStatus(name, wins, loses);
   }
 
-  public OutputStream getOs() {
-    return os;
-  }
-
-  public void setOs(OutputStream os) {
-    this.os = os;
-  }
-
-  public ObjectOutputStream getOos() {
-    return oos;
-  }
-
-  public void setOos(ObjectOutputStream oos) {
-    this.oos = oos;
-  }
-
-  public InputStream getIs() {
-    return is;
-  }
-
-  public void setIs(InputStream is) {
-    this.is = is;
-  }
-
-  public ObjectInputStream getOis() {
-    return ois;
-  }
-
-  public void setOis(ObjectInputStream ois) {
-    this.ois = ois;
+  public Channel getChannel() {
+    return channel;
   }
 }

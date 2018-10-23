@@ -1,5 +1,7 @@
 package untaek.game;
 
+import untaek.BasePanel;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -22,39 +24,43 @@ public class Game extends JPanel{
     static int MARGIN_X = 13 * SIZE;
     static int MARGIN_Y = 5 * SIZE;
 
-    static int OTHER_MARGIN_X = 25;
-    static int OTHER_MARGIN_Y = 25;
+    static public int score;
 
-    Box [][] save_field = new Box[rows][columns];
-    Box [][] field = new Box[rows][columns];
-    Box [][] field_ = new Box[rows][columns];
+    static int OTHER_MARGIN_X = 25;                 // othter player field's margin X
+    static int OTHER_MARGIN_Y = 25;                 // othter player field's margin Y
+
+    Box [][] save_field = new Box[rows][columns];   // field's back up field
+    Box [][] field = new Box[rows][columns];        // main field
+    Box [][] field_ = new Box[rows][columns];       // contain block
 
     static public Box[][] send_field = new Box[20][10];
 
-    public Block block;
-    public Block block_pre_1;
-    public Block block_pre_2;
-    public Block block_pre_3;
-    public Block block_pre_4;
+    public Block block;                             // now block
+    public Block block_pre_1;                       // next block
+    public Block block_pre_2;                       // next next block
+    public Block block_pre_3;                       // next next next block
+    public Block block_pre_4;                       // next // next next next block
 
-    public boolean fall_complete;
-    public boolean fall_block_result;
-    public boolean timer_flag = true;
-    public boolean gameover_flag = false;
-
-    public int gameover_row=rows-1;
+    public boolean fall_complete;                   // block fall complete flag
+    public boolean fall_block_result;               // fall_block() method result value
+    public boolean timer_flag = true;               // normal or down(keyboard) fall block flag
+    public boolean gameover_flag = false;           // game over flag
+    public boolean attack_flag = false;
 
     public int combo=0;
-    public int delay = 500;
-    public int player_number;
+    public int delay = 500;                         // normal block fall delay (0.5s)
+    public int player_number;                       // 0 : me,  1~5 : other player
+    public int attack_point;                        // my attack point
 
     public  Timer timer;
     public TimerTask task;
 
     public static KeyAdapter keyadapter;
+
     public Game(int player) {
         // 초기화
         player_number = player;
+        score = 0;
         reset_field(field);
         reset_field(save_field);
         reset_field_();
@@ -79,7 +85,7 @@ public class Game extends JPanel{
             @Override
             public void run(){
                 // object 떨어짐
-                run_();
+                fall_block();
             }
         };
         timer = new Timer();
@@ -101,8 +107,12 @@ public class Game extends JPanel{
             draw_others_Field(g);
             draw_others_Field_Border(g);
         }
+        if(attack_flag){
+            //send attack_point to server
+        }
 
-        // send_field
+        BasePanel.score.setText(String.valueOf(score));
+        // send field to server
 
         repaint();
         invalidate();
@@ -117,6 +127,7 @@ public class Game extends JPanel{
         }
     }
 
+    // draw my Field's Border
     public void draw_Field_Border(Graphics g){
         g.setColor(Color.BLACK);
 
@@ -137,26 +148,7 @@ public class Game extends JPanel{
         g.drawRect((columns-1) *SIZE, 0, SIZE/2, (rows-4)*SIZE);
     }
 
-    public void draw_others_Field_Border(Graphics g){
-        g.setColor(Color.BLACK);
-
-        // top border
-        g.fillRect(SIZE/4 +OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, (columns-1) *(SIZE/2),SIZE/4);
-        g.drawRect(SIZE/4+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, (columns-1) *(SIZE/2),SIZE/4);
-
-        // bottom border
-        g.fillRect(SIZE/4+OTHER_MARGIN_X, (SIZE/2) * (rows-4)+OTHER_MARGIN_Y, (columns-1) *(SIZE/2),SIZE/4);
-        g.drawRect(SIZE/4+OTHER_MARGIN_X, (SIZE/2) * (rows-4)+OTHER_MARGIN_Y, (columns-1) *(SIZE/2),SIZE/4);
-
-        // left border
-        g.fillRect(SIZE/4+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (rows-4)*(SIZE/2));
-        g.drawRect(SIZE/4+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (rows-4)*(SIZE/2));
-
-        // right border
-        g.fillRect((columns-1) *(SIZE/2)+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (rows-4)*(SIZE/2));
-        g.drawRect((columns-1) *(SIZE/2)+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (rows-4)*(SIZE/2));
-    }
-
+    // draw my Field
     public void draw_Field(Graphics g){
         for(int x = 1; x < columns-1; x++){     // 0~ 11
             for (int y = 4; y < rows-1; y++){   // 4~ 24
@@ -201,50 +193,7 @@ public class Game extends JPanel{
         }
     }
 
-    public void draw_others_Field(Graphics g){
-        for(int x = 1; x < columns-1; x++){     // 0~ 11
-            for (int y = 4; y < rows-1; y++){   // 4~ 24
-                if(field[y][x].num == 1){
-                    switch (field[y][x].color) {
-                        case -2:    // Gray
-                            g.setColor(Color.gray);
-                            break;
-                        case -1:    // Black
-                            g.setColor(Color.BLACK);
-                            break;
-                        case 0:     //  White
-                            g.setColor(Color.WHITE);
-                            break;
-                        case 1:     //  Red (255,0,0)
-                            g.setColor(Color.RED);
-                            break;
-                        case 2:     //  Yellow (255, 212, 0)
-                            g.setColor(Color.YELLOW);
-                            break;
-                        case 3:     //  Blue    (0, 153, 255)
-                            g.setColor(Color.BLUE);
-                            break;
-                        case 4:     // Green    (0, 153, 0)
-                            g.setColor(Color.GREEN);
-                            break;
-                        case 5:     //  Pink    (255, 144, 190)
-                            g.setColor(Color.PINK);
-                            break;
-                        case 6:     //  Purple  (128, 0, 255)
-                            g.setColor(new Color(128, 0, 255));
-                            break;
-                        case 7:     //  Orange  (255, 127, 0)
-                            g.setColor(Color.ORANGE);
-                            break;
-                    }
-                    g.fillRect((SIZE/2) * x+OTHER_MARGIN_X, SIZE/2 + (SIZE/2) * (y-4)+OTHER_MARGIN_Y, SIZE/2,SIZE/2);
-                    g.setColor(Color.BLACK);
-                    g.drawRect((SIZE/2) * x+OTHER_MARGIN_X, SIZE/2 + (SIZE/2) * (y-4)+OTHER_MARGIN_Y, SIZE/2,SIZE/2);
-                }
-            }
-        }
-    }
-
+    // draw my Preview
     public void draw_Preview(Graphics g) {
         draw_Block(g,1);    // pre1
         draw_Block(g,2);    // pre2
@@ -252,6 +201,7 @@ public class Game extends JPanel{
         draw_Block(g,4);    // pre4
     }
 
+    // darw my Block
     public void draw_Block(Graphics g, int block_num){
 
         Block block_pre = null;
@@ -311,6 +261,72 @@ public class Game extends JPanel{
         }
     }
 
+    // draw other Field's Border
+    public void draw_others_Field_Border(Graphics g){
+        g.setColor(Color.BLACK);
+
+        // top border
+        g.fillRect(SIZE/4 +OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, (columns-1) *(SIZE/2),SIZE/4);
+        g.drawRect(SIZE/4+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, (columns-1) *(SIZE/2),SIZE/4);
+
+        // bottom border
+        g.fillRect(SIZE/4+OTHER_MARGIN_X, (SIZE/2) * (rows-4)+OTHER_MARGIN_Y, (columns-1) *(SIZE/2),SIZE/4);
+        g.drawRect(SIZE/4+OTHER_MARGIN_X, (SIZE/2) * (rows-4)+OTHER_MARGIN_Y, (columns-1) *(SIZE/2),SIZE/4);
+
+        // left border
+        g.fillRect(SIZE/4+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (rows-4)*(SIZE/2));
+        g.drawRect(SIZE/4+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (rows-4)*(SIZE/2));
+
+        // right border
+        g.fillRect((columns-1) *(SIZE/2)+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (rows-4)*(SIZE/2));
+        g.drawRect((columns-1) *(SIZE/2)+OTHER_MARGIN_X, SIZE/4+OTHER_MARGIN_Y, SIZE/4, (rows-4)*(SIZE/2));
+    }
+
+    // draw ohter Field
+    public void draw_others_Field(Graphics g){
+        for(int x = 1; x < columns-1; x++){     // 0~ 11
+            for (int y = 4; y < rows-1; y++){   // 4~ 24
+                if(field[y][x].num == 1){
+                    switch (field[y][x].color) {
+                        case -2:    // Gray
+                            g.setColor(Color.gray);
+                            break;
+                        case -1:    // Black
+                            g.setColor(Color.BLACK);
+                            break;
+                        case 0:     //  White
+                            g.setColor(Color.WHITE);
+                            break;
+                        case 1:     //  Red (255,0,0)
+                            g.setColor(Color.RED);
+                            break;
+                        case 2:     //  Yellow (255, 212, 0)
+                            g.setColor(Color.YELLOW);
+                            break;
+                        case 3:     //  Blue    (0, 153, 255)
+                            g.setColor(Color.BLUE);
+                            break;
+                        case 4:     // Green    (0, 153, 0)
+                            g.setColor(Color.GREEN);
+                            break;
+                        case 5:     //  Pink    (255, 144, 190)
+                            g.setColor(Color.PINK);
+                            break;
+                        case 6:     //  Purple  (128, 0, 255)
+                            g.setColor(new Color(128, 0, 255));
+                            break;
+                        case 7:     //  Orange  (255, 127, 0)
+                            g.setColor(Color.ORANGE);
+                            break;
+                    }
+                    g.fillRect((SIZE/2) * x+OTHER_MARGIN_X, SIZE/2 + (SIZE/2) * (y-4)+OTHER_MARGIN_Y, SIZE/2,SIZE/2);
+                    g.setColor(Color.BLACK);
+                    g.drawRect((SIZE/2) * x+OTHER_MARGIN_X, SIZE/2 + (SIZE/2) * (y-4)+OTHER_MARGIN_Y, SIZE/2,SIZE/2);
+                }
+            }
+        }
+    }
+
 //    public void draw_edge(Graphics g){
 //        g.setColor(Color.BLACK);
 //        for(int y = 0; y<rows-4; y++){  //  0 ~ 20
@@ -322,6 +338,7 @@ public class Game extends JPanel{
 //        }
 //    }
 
+    // check to possible or Impossible
     public boolean confirm_field(){
         for(int i = 0; i<rows; i++){
             for(int j = 0; j<columns; j++){
@@ -332,11 +349,13 @@ public class Game extends JPanel{
         return true;
     }
 
+    // block fall complete
     public boolean fall_block(){
         block_event(0);
         return fall_block_result;
     }
 
+    // print my Field (Console)
     public void print_field(Box[][] field){
         for (int i = 0; i < rows-1; i++) {
             System.out.print("□");
@@ -366,7 +385,8 @@ public class Game extends JPanel{
             }
         }
     }
-    // field_ = field_ + block
+
+    // field_ = field_ (0) + block
     public void fill_field_(){
         reset_field_();
         for(int y = 0; y<block.area_length; y++){
@@ -380,6 +400,7 @@ public class Game extends JPanel{
         }
     }
 
+    // field = 0
     public void reset_field(Box[][] field){
         for (int y = 0; y < rows; y++) {
             for(int x = 0; x<columns; x++) { // 0 ~ 11
@@ -391,6 +412,8 @@ public class Game extends JPanel{
             }
         }
     }
+
+    // field_ = 0
     public void reset_field_(){
         for (int y = 0; y<rows; y++){
             for(int x = 0 ; x<columns; x++){
@@ -399,6 +422,7 @@ public class Game extends JPanel{
         }
     }
 
+    // field = save_field
     public void load_field(){
         for(int y = 0; y<rows; y++){
             for(int x = 0; x<columns; x++){
@@ -408,6 +432,8 @@ public class Game extends JPanel{
             }
         }
     }
+
+    // save_field = field     (Back Up)
     public void save_field(){
         for(int i = 0; i<rows; i++){
             for (int j = 0; j<columns; j++){
@@ -417,6 +443,7 @@ public class Game extends JPanel{
         }
     }
 
+    // field = field - field_    (back up fill_field())
     public void return_field(){
         for (int i = 0; i<rows; i++){
             for(int j = 0 ; j<columns; j++){
@@ -425,10 +452,8 @@ public class Game extends JPanel{
             }
         }
     }
-    public void run_(){
-        fall_block();
-        //print_field(field);
-    }
+
+    // block move event
     public void block_event(int a){
         load_field();               // field = savefield
         reset_field_();             // field_ = 0
@@ -499,10 +524,10 @@ public class Game extends JPanel{
         //print_field(field);
     }
 
-
-
+    // confirm block explode
     public void explode_block(){
         int total;
+        attack_point = -1;
         for(int a = rows -2; a > 3; a--){
             total = 0;
             for(int b = 1; b<columns-1; b++){
@@ -517,13 +542,21 @@ public class Game extends JPanel{
                     }
                 }
                 a = a+1;
+                attack_point = attack_point+1;
                 //combo = combo + 1;
+
             }else{
 
             }
         }
+
+        if(attack_point>1){
+            attack_flag = true;
+        }
+        score = score + (attack_point +1) * (attack_point +1) * 10;
     }
 
+    // confirm game over
     public boolean confirm_gameover(){
         for(int y = 0; y<4; y++){
             for (int x = 1; x<columns-1; x++){
@@ -536,6 +569,7 @@ public class Game extends JPanel{
         return false;
     }
 
+    // game over effect ( every block change color  >> gray )
     public void gameover_effect(){
         for(int y = 4; y<rows-1; y++) {
             for (int x = 1; x < columns - 1; x++) {
@@ -546,6 +580,7 @@ public class Game extends JPanel{
         }
     }
 
+    // block preview change
     public void block_pre_change(){
         block = block_pre_1.clone();
         block_pre_1 = block_pre_2.clone();
@@ -568,7 +603,7 @@ public class Game extends JPanel{
                     @Override
                     public void run(){
                         // object 떨어짐
-                        run_();
+                        fall_block();
                     }
                 };
                 timer = new Timer();
@@ -603,7 +638,7 @@ public class Game extends JPanel{
                             @Override
                             public void run(){
                                 // object 떨어짐
-                                run_();
+                                fall_block();
                             }
                         };
                         timer.schedule(task,0,delay /4);
