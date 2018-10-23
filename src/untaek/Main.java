@@ -8,6 +8,7 @@ import java.util.Scanner;
 
 public class Main {
 
+    static Client client;
     public static void main(String[] args) throws IOException {
         Scanner s = new Scanner(System.in);
         String input = s.nextLine().trim();
@@ -15,7 +16,7 @@ public class Main {
 
         switch (input) {
             case "s": new Server(); break;
-            case "c": new Client(); break;
+            case "c": client = new Client(); break;
             case "t3":
                 Server server = new Server();
                 server.setScore(null, 0);

@@ -77,7 +77,6 @@ public class Game extends JPanel {
 
         keyadapter = new MyKeyAdapter();
         this.addKeyListener(keyadapter);
-        this.setFocusable(true);
 
         block = new Block();
         block_pre_1 = new Block();

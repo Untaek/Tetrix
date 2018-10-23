@@ -10,40 +10,45 @@ import java.awt.event.ActionListener;
 
 public class StartScreen extends JPanel {
 
+    BasePanel basePanel;
+
     public StartScreen() {
 
-        JPanel ss = new JPanel();
-        ss.setLayout(new BorderLayout());
-        ss.setBorder(new LineBorder(Color.BLACK, 1, true));
-        ss.setPreferredSize(new Dimension(1000, 750));
-        add(ss, BorderLayout.CENTER);
+        JPanel panelBody = new JPanel();
+        JPanel panelLogin = new JPanel();
 
-        JPanel lf = new JPanel();
+        JLabel labelID = new JLabel("ID");
+        JLabel labelPW = new JLabel("PW");
+        JTextField textID = new JTextField(10);
+        JPasswordField textPW = new JPasswordField(10);
+        JButton btnLogin = new JButton("Join");
 
-        JLabel id = new JLabel("ID");
-        JTextField tf = new JTextField(10);
-        JLabel pw = new JLabel("PW");
-        JPasswordField pf = new JPasswordField(10);
-        JButton join = new JButton("Join");
+        panelBody.setLayout(new BorderLayout());
+        panelBody.setBorder(new LineBorder(Color.BLACK, 1, true));
+        panelBody.setPreferredSize(new Dimension(1000, 750));
 
-        ss.add(lf, BorderLayout.NORTH);
-        ss.add(join);
+        add(panelBody, BorderLayout.CENTER);
 
-        lf.add(id);
-        lf.add(tf);
-        lf.add(pw);
-        lf.add(pf);
+        panelBody.add(panelLogin, BorderLayout.NORTH);
+        panelBody.add(btnLogin);
+        panelLogin.add(labelID);
+        panelLogin.add(textID);
+        panelLogin.add(labelPW);
+        panelLogin.add(textPW);
 
 
 
 //        join.addActionListener(e -> ClientHandler.getInstance().login(id.getText(), pw.getText()));
 
-        join.addActionListener(new ActionListener() {
+        btnLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                lf.setVisible(false);
-                join.setVisible(false);
-                ss.add(new BasePanel());
+                btnLogin.setFocusable(false);
+                textID.setFocusable(false);
+                textPW.setFocusable(false);
+
+                setVisible(false);
+                Main.client.add(basePanel = new BasePanel());
             }
         });
 

@@ -31,28 +31,45 @@ public class BasePanel extends JPanel {
 
     public BasePanel() {
 
-        setLayout(new BorderLayout());
-
         user = new JPanel();
+        score = new JLabel("score");
+        btn_start = new JButton("Start");
+        btn_exit = new JButton("Exit");
+        game = new Game();
+        top = new JPanel();
+        bottom = new JPanel();
+
+        setLayout(new BorderLayout());
         user.setLayout(new BorderLayout());
         user.setBorder(new TitledBorder(new LineBorder(Color.black, 4), "User"));
         user.setPreferredSize(new Dimension(400, 900));
 
-        game = new Game();
-        top = new JPanel();
-        bottom = new JPanel();
+        btn_start.setFocusable(false);
+        btn_exit.setFocusable(false);
+
+        game.game();
+        game.setFocusable(true);
+
+        setLayout(new BorderLayout());
+        user.setLayout(new BorderLayout());
+        user.setBorder(new TitledBorder(new LineBorder(Color.black, 4), "User"));
+        user.setPreferredSize(new Dimension(400, 900));
+
+
+        game.requestFocusInWindow();
         add(user, BorderLayout.WEST);
         add(new PlayerPanel());
-
         user.add(BorderLayout.NORTH, top);
         user.add(BorderLayout.CENTER, game);
         user.add(BorderLayout.SOUTH, bottom);
 
-        game.game();
 
-        score = new JLabel("score");
-        btn_start = new JButton("Start");
-        btn_exit = new JButton("Exit");
+
+
+        btn_start.setFocusable(false);
+        btn_exit.setFocusable(false);
+        game.setFocusable(true);
+        game.requestFocus();
 
         top.add(score);
         bottom.add(btn_start);
