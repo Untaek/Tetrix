@@ -45,6 +45,7 @@ public class PacketManager {
   }
 
   public Snapshot snapshot(int field[][], int color[][], int score) {
+
     return new Snapshot(field, color, score);
   }
 

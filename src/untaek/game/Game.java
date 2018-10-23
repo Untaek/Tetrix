@@ -131,7 +131,6 @@ public class Game extends JPanel{
 
     // draw my Field's Border
     public void draw_Field_Border(Graphics g){
-
         g.setColor(Color.BLACK);
 
         // top border
@@ -149,12 +148,11 @@ public class Game extends JPanel{
         // right border
         g.fillRect((columns-1) *SIZE, 0, SIZE/2, (rows-4)*SIZE);
         g.drawRect((columns-1) *SIZE, 0, SIZE/2, (rows-4)*SIZE);
-
-
     }
 
     // draw my Field
     public void draw_Field(Graphics g){
+        // 눈금
         for(int x = 1; x < columns-1; x++){     // 0~ 11
             for (int y = 4; y < rows-1; y++) {   // 4~ 24
                 g.setColor(gray);
