@@ -5,13 +5,24 @@ public class Packet {
     private String name;
     private int wins;
     private int loses;
-    private int status;
 
     public UserStatus(int id, String name, int wins, int loses){
       super("user_status", id);
       this.name = name;
       this.wins = wins;
       this.loses = loses;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public int getWins() {
+      return wins;
+    }
+
+    public int getLoses() {
+      return loses;
     }
   }
 
@@ -31,6 +42,14 @@ public class Packet {
       this.field = field;
       this.color = color;
     }
+
+    public int[][] getField() {
+      return field;
+    }
+
+    public int[][] getColor() {
+      return color;
+    }
   }
 
   public static class Pop extends BasePacket {
@@ -40,6 +59,10 @@ public class Packet {
       super("pop", id);
       this.amount = amount;
     }
+
+    public int getAmount() {
+      return amount;
+    }
   }
 
   public static class Join extends BasePacket {
@@ -47,6 +70,10 @@ public class Packet {
     public Join(UserStatus user) {
       super("join", user.id);
       this.user = user;
+    }
+
+    public UserStatus getUser() {
+      return user;
     }
   }
 
@@ -56,6 +83,10 @@ public class Packet {
     public Attack(int id, int amount) {
       super("attack", id);
       this.amount = amount;
+    }
+
+    public int getAmount() {
+      return amount;
     }
   }
 
@@ -67,6 +98,14 @@ public class Packet {
       super("login", 0);
       this.name = name;
       this.password = password;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public String getPassword() {
+      return password;
     }
   }
 
@@ -83,6 +122,10 @@ public class Packet {
       super("chat", id);
       this.text = text;
     }
+
+    public String getText() {
+      return text;
+    }
   }
 
   public static class FinishGame extends BasePacket {
@@ -96,6 +139,10 @@ public class Packet {
     Users(UserStatus users[]) {
       super("users", 0);
       this.users = users;
+    }
+
+    public UserStatus[] getUsers() {
+      return users;
     }
   }
 
@@ -124,6 +171,18 @@ public class Packet {
       this.users = users;
       this.status = status;
       this.gameId = gameId;
+    }
+
+    public UserStatus getMe() {
+      return me;
+    }
+
+    public UserStatus[] getUsers() {
+      return users;
+    }
+
+    public int getStatus() {
+      return status;
     }
   }
 

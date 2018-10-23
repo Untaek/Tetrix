@@ -105,39 +105,39 @@ public class ClientHandler {
    * 아래의 리스너를 사용하시오
    */
 
-  private interface OnLoginResultListener{ void on(LoginResult packet); }
+  public interface OnLoginResultListener{ void on(LoginResult packet); }
   private OnLoginResultListener onLoginResultListener;
   public ClientHandler addOnLoginResultListener(OnLoginResultListener listener) { this.onLoginResultListener = listener; return this; }
 
-  private interface OnJoinListener{ void on(Join packet); }
+  public interface OnJoinListener{ void on(Join packet); }
   private OnJoinListener onJoinListener;
   public ClientHandler addOnJoinListener(OnJoinListener listener) { this.onJoinListener = listener; return this; }
 
-  private interface OnLeaveListener{ void on(Leave packet); }
+  public interface OnLeaveListener{ void on(Leave packet); }
   private OnLeaveListener onLeaveListener;
   public ClientHandler addOnLeaveListener(OnLeaveListener listener) { this.onLeaveListener = listener; return this; }
 
-  private interface OnAttackListener{ void on(Attack packet); }
+  public interface OnAttackListener{ void on(Attack packet); }
   private OnAttackListener onAttackListener;
   public ClientHandler addOnAttackListener(OnAttackListener listener) { this.onAttackListener = listener; return this; }
 
-  private interface OnLoseListener{ void on(Lose packet); }
+  public interface OnLoseListener{ void on(Lose packet); }
   private OnLoseListener onLoseListener;
   public ClientHandler addOnLoseListener(OnLoseListener listener) { this.onLoseListener = listener; return this; }
 
-  private interface OnFinishListener{ void on(FinishGame packet); }
+  public interface OnFinishListener{ void on(FinishGame packet); }
   private OnFinishListener onFinishListener;
   public ClientHandler addOnFinishListener(OnFinishListener listener) { this.onFinishListener = listener; return this; }
 
-  private interface OnStartListener{ void on(StartGame packet); }
+  public interface OnStartListener{ void on(StartGame packet); }
   private OnStartListener onStartListener;
   public ClientHandler addOnStartListener(OnStartListener listener) { this.onStartListener = listener; return this; }
 
-  private interface OnChatListener{ void on(Chat packet); }
+  public interface OnChatListener{ void on(Chat packet); }
   private OnChatListener onChatListener;
   public ClientHandler addOnChatListener(OnChatListener listener) { this.onChatListener = listener; return this; }
 
-  private interface OnSnapshotListener{ void on(Snapshot packet); }
+  public interface OnSnapshotListener{ void on(Snapshot packet); }
   private OnSnapshotListener onSnapshotListener;
   public ClientHandler addOnSnapshotListener(OnSnapshotListener listener) { this.onSnapshotListener = listener; return this; }
 

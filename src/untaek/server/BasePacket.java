@@ -19,6 +19,18 @@ public class BasePacket implements Serializable {
     return type;
   }
 
+  public String getNetworkId() {
+    return networkId;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public int getGameId() {
+    return gameId;
+  }
+
   @Override
   public String toString() {
     return new Gson().toJson(this);

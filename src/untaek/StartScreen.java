@@ -1,5 +1,7 @@
 package untaek;
 
+import untaek.server.Packet;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
@@ -32,6 +34,20 @@ public class StartScreen extends JPanel {
         JButton join = new JButton("Join");
 
         ss.add(join);
+
+        join.addActionListener(e -> ClientHandler.getInstance().login(id.getText(), pw.getText()));
+
+        ClientHandler.getInstance().addOnLoginResultListener(packet -> {
+            if(packet.getStatus() == Packet.LoginResult.SUCCESS) {
+                // 성공 넘어가
+                 //lose = packet.getMe().getLoses();
+            }
+            else {
+                //실패 알아서
+
+
+            }
+        });
 
     }
 }
