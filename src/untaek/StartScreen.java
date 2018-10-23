@@ -5,6 +5,8 @@ import untaek.server.Packet;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class StartScreen extends JPanel {
 
@@ -13,29 +15,38 @@ public class StartScreen extends JPanel {
         JPanel ss = new JPanel();
         ss.setLayout(new BorderLayout());
         ss.setBorder(new LineBorder(Color.BLACK, 1, true));
-        ss.setPreferredSize(new Dimension(500, 700));
+        ss.setPreferredSize(new Dimension(1000, 750));
         add(ss, BorderLayout.CENTER);
 
         JPanel lf = new JPanel();
-        ss.add(lf, BorderLayout.NORTH);
 
         JLabel id = new JLabel("ID");
-        lf.add(id);
-
         JTextField tf = new JTextField(10);
-        lf.add(tf);
-
         JLabel pw = new JLabel("PW");
-        lf.add(pw);
-
         JPasswordField pf = new JPasswordField(10);
-        lf.add(pf);
-
         JButton join = new JButton("Join");
 
+        ss.add(lf, BorderLayout.NORTH);
         ss.add(join);
 
-        join.addActionListener(e -> ClientHandler.getInstance().login(id.getText(), pw.getText()));
+        lf.add(id);
+        lf.add(tf);
+        lf.add(pw);
+        lf.add(pf);
+
+
+
+//        join.addActionListener(e -> ClientHandler.getInstance().login(id.getText(), pw.getText()));
+
+        join.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                lf.setVisible(false);
+                join.setVisible(false);
+                ss.add(new BasePanel());
+            }
+        });
+
 
         ClientHandler.getInstance().addOnLoginResultListener(packet -> {
             if(packet.getStatus() == Packet.LoginResult.SUCCESS) {

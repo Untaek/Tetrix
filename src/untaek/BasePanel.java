@@ -70,5 +70,6 @@ public class BasePanel extends JPanel {
                 game.game();
             }
         });
+
     }
 }
