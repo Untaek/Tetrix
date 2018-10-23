@@ -44,8 +44,8 @@ public class PacketManager {
     return new StartGame();
   }
 
-  public Snapshot snapshot(int field[][], int color[][]) {
-    return new Snapshot(field, color);
+  public Snapshot snapshot(int field[][], int color[][], int score) {
+    return new Snapshot(field, color, score);
   }
 
   public Chat chat(String text) {
@@ -87,8 +87,9 @@ class StartGame extends BasePacket {
 class Snapshot extends BasePacket {
   int field[][];
   int color[][];
+  int score;
 
-  public Snapshot(int field[][], int color[][]) {
+  public Snapshot(int field[][], int color[][], int score) {
     super("snapshot", PacketManager.getInstance().currentNetworkId());
   }
 }

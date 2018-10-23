@@ -81,8 +81,8 @@ public class ClientHandler {
     getHandler().context.channel().write(PacketManager.getInstance().startGame());
   }
 
-  void snapshot(final int field[][], final int color[][]) {
-    getHandler().context.channel().write(PacketManager.getInstance().snapshot(field, color));
+  void snapshot(final int field[][], final int color[][], int score) {
+    getHandler().context.channel().write(PacketManager.getInstance().snapshot(field, color, score));
   }
 
   void chat(String text) {

@@ -11,14 +11,17 @@ public class Block implements Cloneable {
 
     Box[][] area;
     Box box;
+
     public int shape; //1~7
     public int degree_max;
     int degree;//0~3
 
+    public static boolean [] bag =  {false, false,false, false,false, false,false};
+    boolean [] bag_ ={true,true,true,true,true,true,true};
+
+
     int row;
     int column;
-
-    public static boolean [] bag = {false,false,false,false,false,false,false};
 
     boolean full_flag;
 
@@ -26,9 +29,11 @@ public class Block implements Cloneable {
 
     public Block(){
         rand = new Random();
-        choose_shape();
 
+
+        choose_shape();
         setting();
+
         reset_area();
         set_value(this.shape, this.degree);
     }
@@ -42,32 +47,21 @@ public class Block implements Cloneable {
     }
 
     public void choose_shape(){
+        if(Arrays.equals(bag, bag_)){
+            System.out.println("가방 모두 사용");
+            Arrays.fill(bag,Boolean.FALSE);
+        }
+
         while(Boolean.TRUE){
             shape = rand.nextInt(7)+1;
-
             if(bag[shape-1] == Boolean.FALSE){
                 bag[shape-1] = Boolean.TRUE;
-                break;
-            }
-        }
-        System.out.print("bag : [ ");
-        for(int i = 0; i<7; i++){
-            System.out.print("  "+bag[i] + "  ");
-        }
-
-        System.out.println("] \n shape : " + shape);
-        full_flag = true;
-        for(Boolean value : bag){
-            if(!value){ // value = unuse
-                full_flag = false;
+                System.out.println(shape);
                 break;
             }
         }
 
-        if(full_flag){
-            System.out.println("full");
-            Arrays.fill(bag, Boolean.FALSE);
-        }
+
     }
 
     public void turn_block(){
@@ -83,6 +77,7 @@ public class Block implements Cloneable {
     }
 
     public void setting(){
+
         // degree_max
         if(this.shape ==1 || this.shape == 4 || this.shape == 5){
             this.degree_max=2;
