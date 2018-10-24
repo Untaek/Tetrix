@@ -12,12 +12,13 @@ public class ReceiveField extends JPanel {
     private static final int OTHER_MARGIN_Y = 25;                 // othter player field's margin Y
     private static final int SIZE = 22;
 
-    private Box[][] field = null;
+    private int [][] fieldNum = null;
+    private int [][] fieldColor = null;
 
-    private int player_num;
 
-    public ReceiveField(int player_num){
-        this.player_num = player_num;
+    public ReceiveField(int[][] num, int[][] color){
+
+
     }
 
     @Override
@@ -25,26 +26,8 @@ public class ReceiveField extends JPanel {
         super.paintComponent(g);
 
         // server로부터 field 전달받음
-        switch(player_num){
-            case 1:
-                field = BasePanel.game.field;
-                break;
-            case 2:
-                field = BasePanel.game.field;
-                break;
-            case 3:
-                field = BasePanel.game.field;
-                break;
-            case 4:
-                field = BasePanel.game.field;
-                break;
-            case 5:
-                field = BasePanel.game.field;
-                break;
-        }
-
         drawOthersFieldBorder(g);
-        drawOthersField(g, field);
+        drawOthersField(g, fieldNum, fieldColor);
 
         repaint();
         invalidate();
@@ -72,11 +55,11 @@ public class ReceiveField extends JPanel {
     }
 
     // draw ohter Field
-    public void drawOthersField(Graphics g, Box[][] field){
+    public void drawOthersField(Graphics g, int[][] fieldNum, int[][] fieldColor){
         for(int x = 1; x < COLUMNS -1; x++){     // 0~ 11
             for (int y = 4; y < ROWS -1; y++){   // 4~ 24
-                if(field[y][x].num == 1){
-                    switch (field[y][x].color) {
+                if(fieldNum[y][x] == 1){
+                    switch (fieldColor[y][x]) {
                         case -2:    // Gray
                             g.setColor(Color.gray);
                             break;

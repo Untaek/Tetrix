@@ -95,6 +95,7 @@ public class Server {
     switch (packet.getType()) {
       case "login": return this.login((Login) packet, ch);
       case "start": return this.startGame((StartGame) packet);
+      case "ready": return this.ready((Ready) packet);
       case "snapshot": return this.broadcastSnapshot((Snapshot) packet);
       case "pop": return this.pop((Pop) packet);
       case "chat": return this.chat((Chat) packet);
@@ -113,6 +114,7 @@ public class Server {
     channel.writeAndFlush(packet);
   }
 
+  // 나 로긘
   private int login(Login p, Channel ch) {
     String name = p.name;
     String password = p.password;
@@ -202,6 +204,7 @@ public class Server {
     return 0;
   }
 
+  // 다른사람 들어옴
   private UserStatus join(Join p) {
     this.rooms.get(p.gameId)
         .getUsers()
@@ -210,20 +213,32 @@ public class Server {
     return users.get(p.id).getUserStatus();
   }
 
-  private int startGame(StartGame p) {
-    Room room = this.rooms.get(p.gameId);
+  // 겜시작
+  private int startGame(StartGame startGame) {
+    Room room = this.rooms.get(startGame.gameId);
     room.setStatus(Room.START);
     room.getLosers().clear();
-    room.getUsers().forEach(u -> u.getChannel().write(p));
+    room.getUsers().forEach(u -> u.getChannel().write(startGame));
     return Room.START;
   }
+  // ready packet (client > server ) >> result send method
+  private int ready(Ready ready) {
 
+
+    int[] readyUser = new int[6];
+    //readyUser.
+    //room.getUsers().
+    return 1;
+  }
+
+  // 방안에 잇는 사람들 field
   private int broadcastSnapshot(Snapshot p) {
     Room room = this.rooms.get(p.gameId);
     room.getUsers().forEach((u) -> u.getChannel().write(p));
     return 0;
   }
 
+  // 부시는거
   private int pop(Pop p) {
     Room room = this.rooms.get(p.gameId);
 
@@ -249,6 +264,7 @@ public class Server {
     return 0;
   }
 
+  // 누구 죽음
   private int lose(Lose p) {
     Room room = rooms.get(p.gameId);
     room.getUsers().forEach(u -> u.getChannel().write(p));
@@ -260,6 +276,7 @@ public class Server {
 
     return 0;
   }
+
 
   private class ServerHandler extends ChannelInboundHandlerAdapter {
 

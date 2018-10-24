@@ -43,24 +43,34 @@ public class StartScreen extends JPanel {
         btnLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                btnLogin.setFocusable(false);
-                textID.setFocusable(false);
-                textPW.setFocusable(false);
+                if(textID.getText().equals("1")){
+                    // login 성공
+                    btnLogin.setFocusable(false);
+                    textID.setFocusable(false);
+                    textPW.setFocusable(false);
+                    setVisible(false);
+                    Main.client.add(basePanel = new BasePanel());
+                }else{
+                    //login 실패
+                }
 
-                setVisible(false);
-                Main.client.add(basePanel = new BasePanel());
+
+
+
             }
         });
 
+        //login packet 보내기
+        //ClientHandler.getInstance().login(textID.getText(), textPW.getPassword().toString());
 
+        // login result packet 받기
         ClientHandler.getInstance().addOnLoginResultListener(packet -> {
             if(packet.getStatus() == Packet.LoginResult.SUCCESS) {
                 // 성공 넘어가
-                 //lose = packet.getMe().getLoses();
+                 //packet.getMe().getLoses();
             }
             else {
-                //실패 알아서
-
+                //실패 dialog 띄우기
 
             }
         });

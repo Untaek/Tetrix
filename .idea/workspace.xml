@@ -1,10 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Tetrix:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="1a3cf999-1236-4e18-b4a5-e03005e087b5" name="Default Changelist" comment="">
+    <list default="true" id="1a3cf999-1236-4e18-b4a5-e03005e087b5" name="Default Changelist" comment="btnStart">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/untaek/BasePanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/untaek/BasePanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/untaek/ClientHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/untaek/ClientHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/untaek/PlayerPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/untaek/PlayerPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/untaek/StartScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/untaek/StartScreen.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/untaek/game/Game.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/untaek/game/Game.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/untaek/game/ReceiveField.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/untaek/game/ReceiveField.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/untaek/server/Packet.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/untaek/server/Packet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/untaek/server/PacketManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/untaek/server/PacketManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/untaek/server/Server.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/untaek/server/Server.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/untaek/server/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/untaek/server/User.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -14,8 +27,11 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/Tetrix$Main.ic" NAME="Main Coverage Results" MODIFIED="1540333145995" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+    <SUITE FILE_PATH="coverage/Tetrix$Main.ic" NAME="Main Coverage Results" MODIFIED="1540338859540" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
     <SUITE FILE_PATH="coverage/Tetrix$Unnamed.ic" NAME="Unnamed Coverage Results" MODIFIED="1539205195886" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" />
+  </component>
+  <component name="CoverageViewManager">
+    <option name="myElementSize" value="201" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="-1970296357">
@@ -69,24 +85,24 @@
     <session id="-1551526635">
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="79" />
+          <entry key="java" value="96" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="79" />
+          <entry key="JAVA" value="96" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="15099" />
-          <entry key="txt" value="237" />
+          <entry key="java" value="17449" />
+          <entry key="txt" value="300" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="15099" />
-          <entry key="PLAIN_TEXT" value="237" />
+          <entry key="JAVA" value="17449" />
+          <entry key="PLAIN_TEXT" value="300" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.lifecycle.project">
@@ -105,8 +121,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/untaek/PlayerPanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="53" column="50" lean-forward="true" selection-start-line="53" selection-start-column="50" selection-end-line="53" selection-end-column="50" />
+            <state relative-caret-position="333">
+              <caret line="65" column="58" selection-start-line="65" selection-start-column="57" selection-end-line="65" selection-end-column="58" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -115,40 +131,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/untaek/StartScreen.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="113">
-              <caret line="57" column="25" lean-forward="true" selection-start-line="57" selection-start-column="25" selection-end-line="57" selection-end-column="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/untaek/game/Game.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="154" column="41" selection-start-line="154" selection-start-column="41" selection-end-line="154" selection-end-column="41" />
-              <folding>
-                <element signature="e#3349#3802#0" />
-                <element signature="e#3808#4070#0" />
-                <element signature="e#4076#4870#0" />
-                <element signature="e#7149#7359#0" />
-                <element signature="e#7365#9635#0" />
-                <element signature="e#9641#9927#0" />
-                <element signature="e#9933#10051#0" />
-                <element signature="e#10057#10629#0" />
-                <element signature="e#10635#10956#0" />
-                <element signature="e#10962#11513#0" />
-                <element signature="e#11519#11913#0" />
-                <element signature="e#11919#12129#0" />
-                <element signature="e#12135#12420#0" />
-                <element signature="e#12426#12725#0" />
-                <element signature="e#12731#13078#0" />
-                <element signature="e#16741#17079#0" />
-                <element signature="e#17085#17410#0" />
-                <element signature="e#17416#17681#0" />
-                <element signature="class#17711:20336" />
-              </folding>
+            <state relative-caret-position="-656">
+              <caret line="32" column="19" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="19" />
             </state>
           </provider>
         </entry>
@@ -156,55 +142,30 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/untaek/BasePanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="379">
-              <caret line="84" lean-forward="true" selection-start-line="84" selection-end-line="84" />
+            <state relative-caret-position="162">
+              <caret line="55" column="32" selection-start-line="55" selection-start-column="32" selection-end-line="55" selection-end-column="32" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="class#2557:3187" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/untaek/Main.java">
+        <entry file="file://$PROJECT_DIR$/src/untaek/server/User.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="241">
-              <caret line="18" column="46" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="46" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state relative-caret-position="69">
+              <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/untaek/Client.java">
+        <entry file="file://$PROJECT_DIR$/src/untaek/server/Room.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="17" column="53" lean-forward="true" selection-start-line="17" selection-start-column="53" selection-end-line="17" selection-end-column="53" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/untaek/game/Block.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="151">
-              <caret line="53" column="31" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="31" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#setValue#0;class#Block#0" />
-                <element signature="method#printBlock#0;class#Block#0" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/untaek/server/PacketManager.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="374">
-              <caret line="69" column="1" selection-start-line="69" selection-start-column="1" selection-end-line="69" selection-end-column="1" />
+            <state relative-caret-position="105">
+              <caret line="16" column="34" selection-start-line="16" selection-start-column="34" selection-end-line="16" selection-end-column="34" />
             </state>
           </provider>
         </entry>
@@ -212,8 +173,54 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/untaek/server/Packet.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-931">
-              <caret line="8" column="62" selection-start-line="8" selection-start-column="62" selection-end-line="8" selection-end-column="62" />
+            <state relative-caret-position="380">
+              <caret line="53" column="25" lean-forward="true" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/untaek/game/ReceiveField.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="385">
+              <caret line="29" column="47" selection-start-line="29" selection-start-column="47" selection-end-line="29" selection-end-column="47" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="method#drawOthersFieldBorder#0;class#ReceiveField#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/untaek/server/Server.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1311">
+              <caret line="242" column="38" selection-start-line="242" selection-start-column="38" selection-end-line="242" selection-end-column="38" />
+              <folding>
+                <element signature="method#init#0;class#Server#0" />
+                <element signature="method#finish#0;class#Server#0" />
+                <element signature="method#setScore#0;class#Server#0" />
+                <element signature="method#login#0;class#Server#0" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/untaek/ClientHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="380">
+              <caret line="99" column="41" selection-start-line="99" selection-start-column="41" selection-end-line="99" selection-end-column="41" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/untaek/Client.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="342">
+              <caret line="18" column="1" lean-forward="true" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -229,19 +236,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>timer</find>
-      <find>player_number</find>
-      <find>gameover_effect</find>
-      <find>down</find>
-      <find>rela</find>
-      <find>-</find>
-      <find>re</find>
-      <find>gameover</find>
-      <find>interru</find>
-      <find>37</find>
-      <find>runnable</find>
-      <find>큐 사용</find>
-      <find>keyadapter</find>
       <find>reset_field</find>
       <find>block_event</find>
       <find>explode_b</find>
@@ -255,10 +249,23 @@
       <find>setvible</find>
       <find>setvisible</find>
       <find>setfo</find>
-      <find>focus</find>
       <find>explodeBlock</find>
       <find>be</find>
       <find>nextin</find>
+      <find>bea</find>
+      <find>focus</find>
+      <find>user</find>
+      <find>score</find>
+      <find>gameFlag</find>
+      <find>Room</find>
+      <find>read</find>
+      <find>game</find>
+      <find>key</find>
+      <find>rea</find>
+      <find>ready</find>
+      <find>keyadapter</find>
+      <find>start</find>
+      <find>btnready</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -280,7 +287,6 @@
       <list>
         <option value="$PROJECT_DIR$/src/untaek/Game.java" />
         <option value="$PROJECT_DIR$/src/untaek/Server.java" />
-        <option value="$PROJECT_DIR$/src/untaek/server/User.java" />
         <option value="$PROJECT_DIR$/src/untaek/server/DB.java" />
         <option value="$PROJECT_DIR$/README.md" />
         <option value="$PROJECT_DIR$/.gitignore" />
@@ -289,22 +295,23 @@
         <option value="$PROJECT_DIR$/src/untaek/game/PlayerPanel.java" />
         <option value="$PROJECT_DIR$/src/untaek/Ddd.java" />
         <option value="$PROJECT_DIR$/src/untaek/game/MyWindow.java" />
-        <option value="$PROJECT_DIR$/src/untaek/server/Server.java" />
         <option value="$PROJECT_DIR$/src/untaek/game/keyboard_queue.java" />
         <option value="$PROJECT_DIR$/src/untaek/game/Receive_Field.java" />
         <option value="$PROJECT_DIR$/src/untaek/game/receiveField.java" />
-        <option value="$PROJECT_DIR$/src/untaek/game/ReceiveField.java" />
         <option value="$PROJECT_DIR$/src/untaek/game/Block.java" />
-        <option value="$PROJECT_DIR$/src/untaek/server/PacketManager.java" />
         <option value="$PROJECT_DIR$/src/untaek/ClientHandler.java" />
         <option value="$PROJECT_DIR$/src/untaek/server/BasePacket.java" />
-        <option value="$PROJECT_DIR$/src/untaek/server/Packet.java" />
         <option value="$PROJECT_DIR$/src/untaek/Main.java" />
         <option value="$PROJECT_DIR$/src/untaek/Client.java" />
-        <option value="$PROJECT_DIR$/src/untaek/PlayerPanel.java" />
-        <option value="$PROJECT_DIR$/src/untaek/StartScreen.java" />
-        <option value="$PROJECT_DIR$/src/untaek/BasePanel.java" />
         <option value="$PROJECT_DIR$/src/untaek/game/Game.java" />
+        <option value="$PROJECT_DIR$/src/untaek/server/PacketManager.java" />
+        <option value="$PROJECT_DIR$/src/untaek/server/User.java" />
+        <option value="$PROJECT_DIR$/src/untaek/StartScreen.java" />
+        <option value="$PROJECT_DIR$/src/untaek/server/Packet.java" />
+        <option value="$PROJECT_DIR$/src/untaek/server/Server.java" />
+        <option value="$PROJECT_DIR$/src/untaek/BasePanel.java" />
+        <option value="$PROJECT_DIR$/src/untaek/PlayerPanel.java" />
+        <option value="$PROJECT_DIR$/src/untaek/game/ReceiveField.java" />
       </list>
     </option>
   </component>
@@ -315,8 +322,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="350" />
-    <option name="y" value="-8" />
+    <option name="x" value="1622" />
+    <option name="y" value="113" />
     <option name="width" value="734" />
     <option name="height" value="758" />
   </component>
@@ -515,8 +522,8 @@
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
     <property name="Repository.Attach.Sources" value="false" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540336266681" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1540387469094" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.intentionPowerPack" />
@@ -672,14 +679,21 @@
       <option name="project" value="LOCAL" />
       <updated>1540334773163</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="beAttacked() Method Complete">
+      <created>1540336364672</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1540336364672</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1456" height="876" extended-state="6" />
+    <frame x="1432" y="120" width="1296" height="1000" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1969914" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.2224919" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -687,8 +701,8 @@
       <window_info id="Capture Tool" order="5" />
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" visible="true" weight="0.32928476" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.493553" visible="true" weight="0.27395412" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32928476" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.493553" visible="true" weight="0.27745664" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49713466" weight="0.3994602" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -707,6 +721,35 @@
       <window_info anchor="right" id="Maven Projects" order="7" weight="0.3295129" />
       <window_info anchor="right" id="Coverage" order="8" side_tool="true" weight="0.3295129" />
     </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1969914" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Image Layers" order="2" />
+      <window_info id="Designer" order="3" />
+      <window_info id="UI Designer" order="4" />
+      <window_info id="Capture Tool" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32928476" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.493553" visible="true" weight="0.2780027" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49713466" weight="0.3994602" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Terminal" order="7" sideWeight="0.49856734" weight="0.20107962" />
+      <window_info anchor="bottom" id="Event Log" order="8" sideWeight="0.506447" side_tool="true" weight="0.34412956" />
+      <window_info anchor="bottom" id="Version Control" order="9" sideWeight="0.49928367" weight="0.32928476" />
+      <window_info anchor="bottom" id="Messages" order="10" sideWeight="0.497851" weight="0.32523617" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Palette" order="3" />
+      <window_info anchor="right" id="Capture Analysis" order="4" />
+      <window_info anchor="right" id="Theme Preview" order="5" />
+      <window_info anchor="right" id="Palette&#9;" order="6" />
+      <window_info anchor="right" id="Maven Projects" order="7" weight="0.3295129" />
+      <window_info anchor="right" id="Coverage" order="8" side_tool="true" weight="0.3295129" />
+    </layout-to-restore>
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
@@ -726,7 +769,8 @@
     <MESSAGE value="Packet Class 수정" />
     <MESSAGE value="StartScreen - join btn click &gt;&gt; BasePanel start" />
     <MESSAGE value="game focus complete" />
-    <option name="LAST_COMMIT_MESSAGE" value="game focus complete" />
+    <MESSAGE value="beAttacked() Method Complete" />
+    <option name="LAST_COMMIT_MESSAGE" value="beAttacked() Method Complete" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/README.md">
@@ -768,35 +812,7 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/untaek/Ddd.java" />
-    <entry file="file://$PROJECT_DIR$/src/untaek/server/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="19" selection-start-line="19" selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/untaek/server/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="653">
-          <caret line="238" selection-start-line="238" selection-end-line="238" />
-          <folding>
-            <element signature="method#init#0;class#Server#0" />
-            <element signature="method#finish#0;class#Server#0" />
-            <element signature="method#setScore#0;class#Server#0" />
-            <element signature="method#onPacket#0;class#Server#0" />
-            <element signature="method#login#0;class#Server#0" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/untaek/game/MyWindow.java" />
-    <entry file="file://$PROJECT_DIR$/src/untaek/server/Room.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="95">
-          <caret line="5" column="33" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="33" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/untaek/game/keyboard_queue.java" />
     <entry file="jar://C:/Program Files/Java/jdk-10.0.2/lib/src.zip!/java.base/java/lang/Thread.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -819,22 +835,32 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/untaek/game/ReceiveField.java">
+    <entry file="file://$PROJECT_DIR$/src/untaek/game/Block.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15" selection-start-line="15" selection-end-line="15" />
+        <state relative-caret-position="151">
+          <caret line="53" column="31" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="method#drawOthersFieldBorder#0;class#ReceiveField#0" />
-            <element signature="method#drawOthersField#0;class#ReceiveField#0" />
+            <element signature="method#setValue#0;class#Block#0" />
+            <element signature="method#printBlock#0;class#Block#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/untaek/ClientHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/untaek/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="418">
-          <caret line="139" column="8" selection-start-line="139" selection-start-column="8" selection-end-line="139" selection-end-column="8" />
+        <state relative-caret-position="241">
+          <caret line="18" column="46" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="46" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/untaek/server/DB.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="449">
+          <caret line="44" column="16" selection-start-line="44" selection-start-column="16" selection-end-line="44" selection-end-column="16" />
         </state>
       </provider>
     </entry>
@@ -854,17 +880,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/untaek/server/DB.java">
+    <entry file="file://$PROJECT_DIR$/src/untaek/server/PacketManager.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-171">
-          <caret line="15" column="44" selection-start-line="15" selection-start-column="44" selection-end-line="15" selection-end-column="44" />
+        <state relative-caret-position="153">
+          <caret line="47" column="33" lean-forward="true" selection-start-line="47" selection-start-column="33" selection-end-line="47" selection-end-column="33" />
+          <folding>
+            <element signature="e#957#958#0" expanded="true" />
+            <element signature="e#995#996#0" expanded="true" />
+            <element signature="e#965#966#0" expanded="true" />
+            <element signature="e#1007#1008#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/untaek/Main.java">
+    <entry file="file://$PROJECT_DIR$/src/untaek/StartScreen.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="241">
-          <caret line="18" column="46" selection-start-line="18" selection-start-column="46" selection-end-line="18" selection-end-column="46" />
+        <state relative-caret-position="114">
+          <caret line="45" column="46" selection-start-line="45" selection-start-column="46" selection-end-line="45" selection-end-column="46" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/untaek/PlayerPanel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="333">
+          <caret line="65" column="58" selection-start-line="65" selection-start-column="57" selection-end-line="65" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -873,88 +912,77 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/untaek/Client.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="17" column="53" lean-forward="true" selection-start-line="17" selection-start-column="53" selection-end-line="17" selection-end-column="53" />
+        <state relative-caret-position="342">
+          <caret line="18" column="1" lean-forward="true" selection-start-line="18" selection-start-column="1" selection-end-line="18" selection-end-column="1" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/untaek/PlayerPanel.java">
+    <entry file="file://$PROJECT_DIR$/src/untaek/server/User.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="53" column="50" lean-forward="true" selection-start-line="53" selection-start-column="50" selection-end-line="53" selection-end-column="50" />
+        <state relative-caret-position="69">
+          <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/untaek/server/Room.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="16" column="34" selection-start-line="16" selection-start-column="34" selection-end-line="16" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/untaek/server/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1311">
+          <caret line="242" column="38" selection-start-line="242" selection-start-column="38" selection-end-line="242" selection-end-column="38" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="method#init#0;class#Server#0" />
+            <element signature="method#finish#0;class#Server#0" />
+            <element signature="method#setScore#0;class#Server#0" />
+            <element signature="method#login#0;class#Server#0" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/untaek/StartScreen.java">
+    <entry file="file://$PROJECT_DIR$/src/untaek/ClientHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="57" column="25" lean-forward="true" selection-start-line="57" selection-start-column="25" selection-end-line="57" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/untaek/server/PacketManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="69" column="1" selection-start-line="69" selection-start-column="1" selection-end-line="69" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/untaek/server/Packet.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-931">
-          <caret line="8" column="62" selection-start-line="8" selection-start-column="62" selection-end-line="8" selection-end-column="62" />
+        <state relative-caret-position="380">
+          <caret line="99" column="41" selection-start-line="99" selection-start-column="41" selection-end-line="99" selection-end-column="41" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/untaek/BasePanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="379">
-          <caret line="84" lean-forward="true" selection-start-line="84" selection-end-line="84" />
+        <state relative-caret-position="162">
+          <caret line="55" column="32" selection-start-line="55" selection-start-column="32" selection-end-line="55" selection-end-column="32" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/untaek/game/Block.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="53" column="31" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="31" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="method#setValue#0;class#Block#0" />
-            <element signature="method#printBlock#0;class#Block#0" />
+            <element signature="class#2557:3187" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/untaek/game/Game.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="154" column="41" selection-start-line="154" selection-start-column="41" selection-end-line="154" selection-end-column="41" />
+        <state relative-caret-position="-656">
+          <caret line="32" column="19" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/untaek/server/Packet.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="380">
+          <caret line="53" column="25" lean-forward="true" selection-start-line="53" selection-start-column="25" selection-end-line="53" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/untaek/game/ReceiveField.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="385">
+          <caret line="29" column="47" selection-start-line="29" selection-start-column="47" selection-end-line="29" selection-end-column="47" />
           <folding>
-            <element signature="e#3349#3802#0" />
-            <element signature="e#3808#4070#0" />
-            <element signature="e#4076#4870#0" />
-            <element signature="e#7149#7359#0" />
-            <element signature="e#7365#9635#0" />
-            <element signature="e#9641#9927#0" />
-            <element signature="e#9933#10051#0" />
-            <element signature="e#10057#10629#0" />
-            <element signature="e#10635#10956#0" />
-            <element signature="e#10962#11513#0" />
-            <element signature="e#11519#11913#0" />
-            <element signature="e#11919#12129#0" />
-            <element signature="e#12135#12420#0" />
-            <element signature="e#12426#12725#0" />
-            <element signature="e#12731#13078#0" />
-            <element signature="e#16741#17079#0" />
-            <element signature="e#17085#17410#0" />
-            <element signature="e#17416#17681#0" />
-            <element signature="class#17711:20336" />
+            <element signature="imports" expanded="true" />
+            <element signature="method#drawOthersFieldBorder#0;class#ReceiveField#0" />
           </folding>
         </state>
       </provider>
@@ -965,10 +993,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
+          <last-edited>Tetrix:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>

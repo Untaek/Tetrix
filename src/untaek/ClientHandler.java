@@ -89,7 +89,7 @@ public class ClientHandler {
   }
 
   void start(int id, int gameId) {
-    getHandler().context.writeAndFlush(PacketManager.getInstance().startGame(id, gameId));
+    getHandler().context.writeAndFlush(PacketManager.getInstance().ready(id, gameId));
   }
 
   void snapshot(int id, final int field[][], final int color[][]) {
@@ -129,7 +129,7 @@ public class ClientHandler {
   private OnFinishListener onFinishListener;
   public ClientHandler addOnFinishListener(OnFinishListener listener) { this.onFinishListener = listener; return this; }
 
-  public interface OnStartListener{ void on(StartGame packet); }
+  public interface OnStartListener{ void on(Ready packet); }
   private OnStartListener onStartListener;
   public ClientHandler addOnStartListener(OnStartListener listener) { this.onStartListener = listener; return this; }
 
@@ -168,7 +168,7 @@ public class ClientHandler {
       case "finish": onFinishListener.on((FinishGame) packet); break;
 
       // 게임이 시작할 때
-      case "start": onStartListener.on((StartGame) packet); break;
+      case "start": onStartListener.on((Ready) packet); break;
 
       // 채팅을 할 때
       case "chat": onChatListener.on((Chat) packet); break;

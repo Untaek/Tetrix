@@ -22,11 +22,11 @@ public class PlayerPanel extends JPanel {
         JPanel chat = new JPanel();
         JPanel chatBottom = new JPanel();
 
-        JLabel record1 = new JLabel("score");
-        JLabel record2 = new JLabel("score");
-        JLabel record3 = new JLabel("score");
-        JLabel record4 = new JLabel("score");
-        JLabel record5 = new JLabel("score");
+        JLabel record1 = new JLabel("labelID");
+        JLabel record2 = new JLabel("labelID");
+        JLabel record3 = new JLabel("labelID");
+        JLabel record4 = new JLabel("labelID");
+        JLabel record5 = new JLabel("labelID");
         JTextField fieldTxt = new JTextField();
         JTextField sendTxt = new JTextField();
         JButton sendBtn = new JButton("SEND");
@@ -68,6 +68,7 @@ public class PlayerPanel extends JPanel {
         player3.add(BorderLayout.CENTER,new ReceiveField(3));
         player4.add(BorderLayout.CENTER,new ReceiveField(4));
         player5.add(BorderLayout.CENTER,new ReceiveField(5));
+
         player1.add(BorderLayout.NORTH, record1);
         player2.add(BorderLayout.NORTH, record2);
         player3.add(BorderLayout.NORTH, record3);

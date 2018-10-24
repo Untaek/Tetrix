@@ -44,6 +44,10 @@ public class PacketManager {
     return new StartGame(id, gameId);
   }
 
+  public Ready ready(int id, int gameId) {
+    return new Ready(id, gameId);
+  }
+
   public Snapshot snapshot(int id, int field[][], int color[][]) {
     return new Snapshot(id, field, color);
   }

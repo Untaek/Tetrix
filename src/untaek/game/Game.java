@@ -23,8 +23,6 @@ public class Game extends JPanel {
     static final int MARGIN_X = 13 * SIZE;
     static final int MARGIN_Y = 5 * SIZE;
 
-    public int score;
-
     static int OTHER_MARGIN_X = 25;                 // othter player field's margin X
     static int OTHER_MARGIN_Y = 25;                 // othter player field's margin Y
 
@@ -48,6 +46,7 @@ public class Game extends JPanel {
     public boolean timer_flag = true;               // normal or down(keyboard) fall block flag
     public boolean gameover_flag;           // game over flag
     public boolean attack_flag = false;
+    public boolean gameFlag = false;
 
     public int combo = 0;
     public int delay = 500;                         // normal block fall delay (0.5s)
@@ -62,12 +61,56 @@ public class Game extends JPanel {
 
     public static KeyAdapter keyadapter;
 
+    public Game(){
+    }
+
+    public void init() {
+        // 초기화
+        rand = new Random();
+        Arrays.fill(Block.bag,false);
+        queue = new LinkedList<>();
+        gameover_flag = false;
+
+        resetField(field);
+        resetField(save_field);
+        resetField_();
+
+        keyadapter = new MyKeyAdapter();
+        this.addKeyListener(keyadapter);
+
+        block = new Block();
+        block_pre_1 = new Block();
+        block_pre_2 = new Block();
+        block_pre_3 = new Block();
+        block_pre_4 = new Block();
+
+        // field_ 에 block 넣기
+        fillField_();
+
+        // field  = field + field_
+        fillField();
+    }
+
+    public void start() {
+        task = new TimerTask() {
+            @Override
+            public void run() {
+                // object 떨어짐
+                fallBlock();
+            }
+        };
+        timer = new Timer();
+        timer.schedule(task, 0, delay);
+
+        thread = new Thread(runnable);
+        thread.start();
+    }
+
     public void game() {
         // 초기화
         rand = new Random();
         Arrays.fill(Block.bag,false);
         queue = new LinkedList<>();
-        score = 0;
         gameover_flag = false;
 
         resetField(field);
@@ -106,21 +149,21 @@ public class Game extends JPanel {
     public void paintComponent(Graphics g) {
 
         super.paintComponent(g);
-        if (gameover_flag) {
-            gameOverEffect();
-        }
-        // my game
-        drawPreview(g);
+
         drawField(g);
         drawFieldBorder(g);
+        if(gameFlag) {
+            if (gameover_flag) {
+                gameOverEffect();
+            }
+            // my game
+            drawPreview(g);
 
-        if (attack_flag) {
-            //send attack_point to server
+            if (attack_flag) {
+                //send attack_point to server
+            }
+            // send field to server
         }
-
-        BasePanel.score.setText(String.valueOf(score));
-        // send field to server
-
         repaint();
         invalidate();
     }

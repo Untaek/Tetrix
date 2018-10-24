@@ -4,8 +4,8 @@ import io.netty.channel.Channel;
 
 
 public class User {
-  private String name;
-  private int id;
+  private String name;  // login id
+  private int id;       // database id
   private Channel channel;
   private String networkId;
   private int wins, loses;

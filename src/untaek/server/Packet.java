@@ -32,6 +32,17 @@ public class Packet {
       this.gameId = gameId;
     }
   }
+  public static class Ready extends BasePacket {
+    public Ready(int id, int gameId) {
+      super("ready", id);
+      this.gameId = gameId;
+
+      //
+      //조건문 다 래디햇어
+      // start packet 보내는 메소드를 여기에
+      // startPacketSend();   ( server > client)
+    }
+  }
 
   public static class Snapshot extends BasePacket {
     int field[][];
