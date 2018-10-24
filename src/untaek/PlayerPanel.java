@@ -1,82 +1,69 @@
 package untaek;
 
-import untaek.game.ReceiveField;
+import untaek.server.Packet;
 
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-import javax.swing.border.TitledBorder;
 import java.awt.*;
 
 public class PlayerPanel extends JPanel {
 
+    UserPanel userPanel1;
+    UserPanel userPanel2;
+    UserPanel userPanel3;
+    UserPanel userPanel4;
+    UserPanel userPanel5;
+    ChatPanel chatPanel;
     PlayerPanel() {
 
         setLayout(new GridLayout(2,3));
         setPreferredSize(new Dimension(850,1000));
 
-        JPanel player1 = new JPanel();
-        JPanel player2 = new JPanel();
-        JPanel player3 = new JPanel();
-        JPanel player4 = new JPanel();
-        JPanel player5 = new JPanel();
-        JPanel chat = new JPanel();
-        JPanel chatBottom = new JPanel();
+        userPanel1 = new UserPanel();
+        userPanel2 = new UserPanel();
+        userPanel3 = new UserPanel();
+        userPanel4 = new UserPanel();
+        userPanel5 = new UserPanel();
+        chatPanel = new ChatPanel();
 
-        JLabel record1 = new JLabel("labelID");
-        JLabel record2 = new JLabel("labelID");
-        JLabel record3 = new JLabel("labelID");
-        JLabel record4 = new JLabel("labelID");
-        JLabel record5 = new JLabel("labelID");
-        JTextField fieldTxt = new JTextField();
-        JTextField sendTxt = new JTextField();
-        JButton sendBtn = new JButton("SEND");
 
-        player1.setBorder(new TitledBorder(new LineBorder(Color.black),"Player 1"));
-        player2.setBorder(new TitledBorder(new LineBorder(Color.BLACK),"Player 2"));
-        player3.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Player 3"));
-        player4.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Player 4"));
-        player5.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Player 5"));
-        chat.setBorder(new TitledBorder(new LineBorder(Color.BLACK), "Chat"));
+        this.add(userPanel1);
+        this.add(userPanel2);
+        this.add(userPanel3);
+        this.add(chatPanel);
+        this.add(userPanel4);
+        this.add(userPanel5);
 
-        player1.setLayout(new BorderLayout());
-        player2.setLayout(new BorderLayout());
-        player3.setLayout(new BorderLayout());
-        player4.setLayout(new BorderLayout());
-        player5.setLayout(new BorderLayout());
-        chat.setLayout(new BorderLayout());
-        chatBottom.setLayout(new BorderLayout());
+        // join 시 이벤트
+        ClientHandler.getInstance().addOnJoinListener(new ClientHandler.OnJoinListener() {
+            @Override
+            public void on(Packet.Join packet) {
+                StartScreen.users[StartScreen.usersIndex].setName(packet.getUser().getName());
+                StartScreen.users[StartScreen.usersIndex].setWins(packet.getUser().getWins());
+                StartScreen.users[StartScreen.usersIndex].setLoses(packet.getUser().getLoses());
+                StartScreen.usersIndex++;
+            }
+        });
 
-        player1.setPreferredSize(new Dimension(280, 300));
-        player2.setPreferredSize(new Dimension(280, 300));
-        player3.setPreferredSize(new Dimension(280, 300));
-        player4.setPreferredSize(new Dimension(280,300));
-        player5.setPreferredSize(new Dimension(280, 300));
-        chat.setPreferredSize(new Dimension(280, 300));
+        ClientHandler.getInstance().addOnLeaveListener(new ClientHandler.OnLeaveListener() {
+            @Override
+            public void on(Packet.Leave packet) {
+                //
 
-        fieldTxt.setFocusable(false);
-        sendBtn.setFocusable(false);
-
-        add(player1);
-        add(player2);
-        add(player3);
-        add(chat);
-        add(player4);
-        add(player5);
-
-//        player1.add(BorderLayout.CENTER,new ReceiveField(1));
-//        player2.add(BorderLayout.CENTER,new ReceiveField(2));
-//        player3.add(BorderLayout.CENTER,new ReceiveField(3));
-//        player4.add(BorderLayout.CENTER,new ReceiveField(4));
-//        player5.add(BorderLayout.CENTER,new ReceiveField(5));
-
-        player1.add(BorderLayout.NORTH, record1);
-        player2.add(BorderLayout.NORTH, record2);
-        player3.add(BorderLayout.NORTH, record3);
-        player4.add(BorderLayout.NORTH, record4);
-        player5.add(BorderLayout.NORTH, record5);
-        chat.add(BorderLayout.CENTER, fieldTxt);
-        chat.add(BorderLayout.SOUTH,chatBottom);
-        chatBottom.add(BorderLayout.CENTER, sendTxt);
-        chatBottom.add(BorderLayout.EAST, sendBtn);
+                int i = 0;
+                boolean flag = false;
+                for(Packet.UserStatus user : StartScreen.users){
+                    if(user.getId()==packet.getId()){
+                        flag = true;
+                        if(i== 0){
+                            StartScreen.owner = packet.getNextOwner();
+                        }
+                    }
+                    if(flag || i+1 <5){
+                        StartScreen.users[i] = StartScreen.users[i+1];
+                    }
+                    i++;
+                }
+            }
+        });
     }
 }

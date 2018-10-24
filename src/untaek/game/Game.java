@@ -30,8 +30,8 @@ public class Game extends JPanel {
     Box[][] field = new Box[ROWS][COLUMNS];        // main field
     Box[][] field_ = new Box[ROWS][COLUMNS];       // contain block
 
-    int[][] sendNum = new int[20][10];
-    int[][] sendColor = new int[20][10];
+    public static int[][] sendNum = new int[20][10];
+    public static int[][] sendColor = new int[20][10];
 
     static public Box[][] send_field = new Box[20][10];
 
@@ -74,10 +74,6 @@ public class Game extends JPanel {
         resetField(field);
         resetField(save_field);
         resetField_();
-
-        keyadapter = new MyKeyAdapter();
-        this.addKeyListener(keyadapter);
-
         block = new Block();
         block_pre_1 = new Block();
         block_pre_2 = new Block();
@@ -92,6 +88,8 @@ public class Game extends JPanel {
     }
 
     public void start() {
+        keyadapter = new MyKeyAdapter();
+        this.addKeyListener(keyadapter);
         task = new TimerTask() {
             @Override
             public void run() {
@@ -151,6 +149,7 @@ public class Game extends JPanel {
         super.paintComponent(g);
 
         drawField(g);
+        setSendField();
         drawFieldBorder(g);
         if(gameFlag) {
             if (gameover_flag) {
@@ -168,7 +167,7 @@ public class Game extends JPanel {
         invalidate();
     }
 
-    public void sendFieldSetting() {
+    public void setSendField() {
         for (int x = 0; x < 10; x++) {
             for (int y = 0; y < 20; y++) {
                 sendNum[y][x] = field[y + 4][x + 1].num;

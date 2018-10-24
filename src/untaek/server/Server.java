@@ -191,7 +191,7 @@ public class Server {
       e.printStackTrace();
     }
 
-    write(PacketManager.getInstance().fail("login failed"), ch);
+    write(PacketManager.getInstance().loginResult(null,null,LoginResult.FAILED,0,0), ch);
     System.out.println(String.format("Login failed name: %s, password: %s", name, password));
     return 0;
   }

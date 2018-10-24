@@ -27,6 +27,14 @@ public class Packet {
     public int getLoses() {
       return loses;
     }
+
+    public int getId(){ return id;}
+
+      public int getGameId(){ return gameId;}
+
+    public void setName(String name){ this.name = name;}
+    public void setWins(int wins){this.wins = wins;}
+    public void setLoses(int loses){this.loses = loses;}
   }
 
   public static class StartGame extends BasePacket {
