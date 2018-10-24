@@ -4,7 +4,6 @@ import untaek.server.Packet.*;
 
 public class PacketManager {
 
-  static private String networkId;
   static private PacketManager instance;
   private PacketManager(){}
 
@@ -12,12 +11,7 @@ public class PacketManager {
     if(instance == null) {
       instance = new PacketManager();
     }
-    networkId = ClientHandler.networkId();
     return instance;
-  }
-
-  String currentNetworkId() {
-    return networkId;
   }
 
   public UserStatus userStatus(int id, String name, int wins, int loses) {
@@ -68,7 +62,11 @@ public class PacketManager {
     return new Join(user);
   }
 
-  public LoginResult loginResult(UserStatus me, UserStatus users[], int status, int gameId){
-    return new LoginResult(me, users, status, gameId);
+  public LoginResult loginResult(UserStatus me, UserStatus users[], int status, int gameId, int owner){
+    return new LoginResult(me, users, status, gameId, owner);
+  }
+
+  public Leave leave(int id, int gameId, int nextOwner) {
+    return new Leave(id, gameId, nextOwner);
   }
 }
