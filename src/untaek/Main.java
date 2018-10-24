@@ -18,9 +18,9 @@ public class Main {
             case "s": new Server(); break;
             case "c": client = new Client(); break;
             case "t3":
-                Server server = new Server();
-                server.setScore(null, 0);
-                server.finish();
+//                Server server = new Server();
+//                server.setScore(null, 0);
+//                server.finish();
                 break;
             case "db":
                 new DB(); break;

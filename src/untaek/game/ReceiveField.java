@@ -16,7 +16,7 @@ public class ReceiveField extends JPanel {
     private int [][] fieldColor = null;
 
 
-    public ReceiveField(int[][] num, int[][] color){
+    public ReceiveField(int[][] num, int[][] color ){
 
 
     }
