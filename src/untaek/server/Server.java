@@ -154,7 +154,21 @@ public class Server {
           .findFirst()
           .orElse(new Room((int)(Math.random() * 100000), id));
 
-      User user = new User(name, id, room.getId(), ch, ch.id().asShortText(), wins, loses);
+      int candidateId = 1;
+
+      int occ[] = {0,0,0,0,0,0};
+
+      for(User u1: room.getUsers()) {
+        occ[u1.getId()-1] = 1;
+      }
+
+      for(candidateId = 1; ; candidateId++) {
+        if(occ[candidateId-1] == 0) {
+          break;
+        }
+      }
+
+      User user = new User(name, candidateId, room.getId(), ch, ch.id().asShortText(), wins, loses);
 
       room.getUsers().add(user);
       this.users.put(user.getId(), user);
