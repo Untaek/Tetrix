@@ -2,6 +2,9 @@ package untaek.server;
 
 public class Packet {
   public static class UserStatus extends BasePacket {
+    private static final int OWNER = 524;
+    private static final int PARTICIPANT = 329;
+    
     private String name;
     private int wins;
     private int loses;
@@ -165,12 +168,14 @@ public class Packet {
     private UserStatus me;
     private UserStatus users[];
     private int status;
+    private int owner;
 
-    public LoginResult(UserStatus me, UserStatus users[], int status, int gameId) {
+    public LoginResult(UserStatus me, UserStatus users[], int status, int gameId, int owner) {
       super("login_result", me.id);
       this.users = users;
       this.status = status;
       this.gameId = gameId;
+      this.owner = owner;
     }
 
     public UserStatus getMe() {
@@ -184,12 +189,26 @@ public class Packet {
     public int getStatus() {
       return status;
     }
+
+    public int getOwner() {
+      return owner;
+    }
   }
 
   public static class Leave extends BasePacket {
-    public Leave(int id, int gameId) {
+    private int nextOwner;
+    public Leave(int id, int gameId, int nextOwner) {
       super("leave", id);
       this.gameId = gameId;
+      this.nextOwner = nextOwner;
+    }
+
+    public int getNextOwner() {
+      return nextOwner;
+    }
+
+    public void setNextOwner(int nextOwner) {
+      this.nextOwner = nextOwner;
     }
   }
 }

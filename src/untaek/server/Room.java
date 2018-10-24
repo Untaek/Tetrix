@@ -10,13 +10,15 @@ public class Room {
 
   private ArrayList<User> users;
   private ArrayList<Integer> losers;
+  private int owner;
   private int status = WAITING;
   private int id;
 
-  public Room(int id){
+  public Room(int id, int owner){
     this.users = new ArrayList<>();
     this.losers = new ArrayList<>();
     this.id = id;
+    this.owner = owner;
   }
 
   public void setStatus(int status) {
@@ -43,5 +45,13 @@ public class Room {
 
   public ArrayList<Integer> getLosers() {
     return losers;
+  }
+
+  public void setOwner(int owner) {
+    this.owner = owner;
+  }
+
+  public int getOwner() {
+    return owner;
   }
 }

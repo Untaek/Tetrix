@@ -6,6 +6,7 @@ import io.netty.channel.Channel;
 public class User {
   private String name;
   private int id;
+  private int gameId;
   private Channel channel;
   private String networkId;
   private int wins, loses;
@@ -17,9 +18,10 @@ public class User {
     this.networkId = networkId;
   }
 
-  public User(String name, int id, Channel channel, String networkId, int wins, int loses) {
+  public User(String name, int id, int gameId, Channel channel, String networkId, int wins, int loses) {
     this.name = name;
     this.id = id;
+    this.gameId = gameId;
     this.channel = channel;
     this.networkId = networkId;
     this.wins = wins;
@@ -36,6 +38,14 @@ public class User {
 
   public Channel getChannel() {
     return channel;
+  }
+
+  public int getGameId() {
+    return gameId;
+  }
+
+  public void setGameId(int gameId) {
+    this.gameId = gameId;
   }
 
   @Override

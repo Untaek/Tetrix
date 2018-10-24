@@ -18,16 +18,16 @@ import untaek.server.Packet.*;
 
 public class Server {
 
-  DB db;
-  ChannelFuture channelFuture;
+  private DB db;
+  private ChannelFuture channelFuture;
 
-  EventLoopGroup boss;
-  EventLoopGroup worker;
+  private EventLoopGroup boss;
+  private EventLoopGroup worker;
 
-  Hashtable<Integer, User> users;
-  Hashtable<Integer, Room> rooms;
+  private Hashtable<Integer, User> users;
+  private Hashtable<Integer, Room> rooms;
 
-  final int MAXIMUM = 6;
+  private final int MAXIMUM = 6;
 
   public Server() {
     init();
@@ -73,22 +73,6 @@ public class Server {
     }
   }
 
-  public void setScore(int[] ids, int winner){
-    try {
-      Connection c = db.getConnection();
-      PreparedStatement st = c.prepareStatement("SELECT 1 + 1 AS so");
-      ResultSet rs = st.executeQuery();
-      rs.next();
-
-      System.out.println(rs.getInt("so"));
-
-      st.close();
-      c.close();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-  }
-
   private Object onPacket(BasePacket packet, Channel ch) {
     System.out.println(packet.toString());
 
@@ -99,14 +83,16 @@ public class Server {
       case "pop": return this.pop((Pop) packet);
       case "chat": return this.chat((Chat) packet);
       case "join": return this.join((Join) packet);
+      case "lose": return this.lose((Lose) packet);
+      case "leave": return this.leave((Leave) packet);
       default:
     }
 
     return null;
   }
 
-  private void broadcast(BasePacket packet, Room room) {
-    room.getUsers().forEach(u -> u.getChannel().writeAndFlush(packet));
+  private void broadcast(BasePacket packet, int gameId) {
+    this.rooms.get(gameId).getUsers().forEach(u -> u.getChannel().writeAndFlush(packet));
   }
 
   private void write(BasePacket packet, Channel channel) {
@@ -160,34 +146,28 @@ public class Server {
       wins = findResult.getInt("win");
       loses = findResult.getInt("lose");
 
-      User user = new User(name, id, ch, ch.id().asShortText(), wins, loses);
-
-      users.put(user.getId(), user);
-
       c.close();
 
-      Room room;
-
-      room = this.rooms.values()
+      Room room = this.rooms.values()
           .stream()
           .filter((a) -> a.getUsers().size() < MAXIMUM)
           .findFirst()
-          .orElse(null);
+          .orElse(new Room((int)(Math.random() * 100000), id));
 
-      if(room == null) {
-        room = new Room((int)(Math.random() * 100000));
-        room.getUsers().add(user);
-        this.rooms.put(room.getId(), room);
-      }
+      User user = new User(name, id, room.getId(), ch, ch.id().asShortText(), wins, loses);
+
+      room.getUsers().add(user);
+      this.users.put(user.getId(), user);
+      this.rooms.put(room.getId(), room);
 
       write(
           PacketManager.getInstance()
-              .loginResult(user.getUserStatus(), room.getUsersStatus().toArray(new UserStatus[0]), LoginResult.SUCCESS, room.getId()),
+              .loginResult(user.getUserStatus(), room.getUsersStatus().toArray(new UserStatus[0]), LoginResult.SUCCESS, room.getId(), room.getOwner()),
           user.getChannel());
 
       broadcast(
           PacketManager.getInstance()
-              .join(user.getUserStatus()), room);
+              .join(user.getUserStatus()), room.getId());
 
       System.out.println(String.format("Login success name: %s", name));
       System.out.println(user.toString());
@@ -202,61 +182,76 @@ public class Server {
     return 0;
   }
 
-  private UserStatus join(Join p) {
-    this.rooms.get(p.gameId)
-        .getUsers()
-        .forEach(u -> u.getChannel().write(p));
-
-    return users.get(p.id).getUserStatus();
+  private int join(Join p) {
+    broadcast(p, p.gameId);
+    return 0;
   }
 
   private int startGame(StartGame p) {
     Room room = this.rooms.get(p.gameId);
     room.setStatus(Room.START);
     room.getLosers().clear();
-    room.getUsers().forEach(u -> u.getChannel().write(p));
+    broadcast(p, p.gameId);
     return Room.START;
   }
 
   private int broadcastSnapshot(Snapshot p) {
-    Room room = this.rooms.get(p.gameId);
-    room.getUsers().forEach((u) -> u.getChannel().write(p));
+    broadcast(p, p.gameId);
     return 0;
   }
 
   private int pop(Pop p) {
-    Room room = this.rooms.get(p.gameId);
+    int amount = 0;
+    switch (p.amount) {
+      case 1: break;
+      case 2: amount = 1; break;
+      case 3: amount = 2; break;
+      case 4: amount = 4; break;
+    }
 
-    room.getUsers().forEach(u -> {
-      int amount = 0;
-      switch (p.amount) {
-        case 1: break;
-        case 2: amount = 1; break;
-        case 3: amount = 2; break;
-        case 4: amount = 4; break;
-      }
-
-      if(amount > 0 && p.id != u.getId()) {
-        u.getChannel().write(PacketManager.getInstance().attack(p.id, amount));
-      }
-    });
+    broadcast(PacketManager.getInstance().attack(p.id, amount), p.gameId);
 
     return 0;
   }
 
   private int chat(Chat p) {
-    rooms.get(p.gameId).getUsers().forEach(u -> u.getChannel().write(p));
+    broadcast(p, p.gameId);
     return 0;
   }
 
   private int lose(Lose p) {
     Room room = rooms.get(p.gameId);
-    room.getUsers().forEach(u -> u.getChannel().write(p));
     room.getLosers().add(p.id);
+    broadcast(p, p.gameId);
 
     if(room.getUsers().size() == room.getLosers().size() - 1) {
-      room.getUsers().forEach(u -> u.getChannel().write(PacketManager.getInstance().finishGame()));
+      broadcast(PacketManager.getInstance().finishGame(), p.gameId);
     }
+
+    return 0;
+  }
+
+  private int leave(Leave p) {
+    Room room = rooms.get(p.gameId);
+    int prevOwner = room.getOwner();
+
+    room.getUsers().forEach(u -> {
+      if(p.id == u.getId()) {
+        room.getUsers().remove(u);
+
+        if(room.getUsers().size() == 0) {
+          rooms.remove(p.gameId);
+          return;
+        }
+
+        if(p.id == prevOwner) {
+          room.setOwner(room.getUsers().get(0).getId());
+          p.setNextOwner(room.getOwner());
+        }
+      }
+    });
+
+    broadcast(p, p.gameId);
 
     return 0;
   }
@@ -264,13 +259,22 @@ public class Server {
   private class ServerHandler extends ChannelInboundHandlerAdapter {
 
     @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-      // 로그인 처리, 최초 접속
+    public void channelActive(ChannelHandlerContext ctx) {
       System.out.println(ctx.channel().id().asShortText());
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    public void channelInactive(ChannelHandlerContext ctx) {
+      System.out.println(ctx.channel().id().asShortText());
+      users.values()
+          .stream()
+          .filter(u -> u.getChannel().id().asShortText().equals(ctx.channel().id().asShortText()))
+          .findFirst()
+          .ifPresent(u -> leave(PacketManager.getInstance().leave(u.getId(), u.getGameId(), 0)));
+    }
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
       onPacket((BasePacket) msg, ctx.channel());
     }
   }
