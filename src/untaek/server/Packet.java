@@ -9,11 +9,12 @@ public class Packet {
     private int wins;
     private int loses;
 
-    public UserStatus(int id, String name, int wins, int loses){
+    public UserStatus(int id, int gameId, String name, int wins, int loses){
       super("user_status", id);
       this.name = name;
       this.wins = wins;
       this.loses = loses;
+      this.gameId = gameId;
     }
 
     public String getName() {
@@ -37,17 +38,17 @@ public class Packet {
   }
 
   public static class Snapshot extends BasePacket {
-    int field[][];
+    int num[][];
     int color[][];
 
-    public Snapshot(int id, int field[][], int color[][]) {
+    public Snapshot(int id, int num[][], int color[][]) {
       super("snapshot", id);
-      this.field = field;
+      this.num = num;
       this.color = color;
     }
 
-    public int[][] getField() {
-      return field;
+    public int[][] getnum() {
+      return num;
     }
 
     public int[][] getColor() {

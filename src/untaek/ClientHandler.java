@@ -100,6 +100,10 @@ public class ClientHandler {
     getHandler().context.writeAndFlush(PacketManager.getInstance().chat(id, text));
   }
 
+  void logout(int id, int gameId) {
+    getHandler().context.writeAndFlush(PacketManager.getInstance().leave(id, gameId, 0));
+  }
+
   /**
    * 받은 패킷을 처리하고자 한다면
    * 아래의 리스너를 사용하시오

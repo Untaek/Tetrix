@@ -14,8 +14,8 @@ public class PacketManager {
     return instance;
   }
 
-  public UserStatus userStatus(int id, String name, int wins, int loses) {
-    return new UserStatus(id, name, wins, loses);
+  public UserStatus userStatus(int id, int gameId, String name, int wins, int loses) {
+    return new UserStatus(id, gameId, name, wins, loses);
   }
 
   public Login login(String name, String password) {
@@ -38,8 +38,8 @@ public class PacketManager {
     return new StartGame(id, gameId);
   }
 
-  public Snapshot snapshot(int id, int field[][], int color[][]) {
-    return new Snapshot(id, field, color);
+  public Snapshot snapshot(int id, int num[][], int color[][]) {
+    return new Snapshot(id, num, color);
   }
 
   public Chat chat(int id, String text) {

@@ -33,7 +33,7 @@ public class User {
   }
 
   public Packet.UserStatus getUserStatus() {
-    return PacketManager.getInstance().userStatus(id, name, wins, loses);
+    return PacketManager.getInstance().userStatus(id, gameId, name, wins, loses);
   }
 
   public Channel getChannel() {
